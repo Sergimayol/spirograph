@@ -3,7 +3,6 @@
 ;   Autor 2: ;
 
 ; -------------------------------------------------------------------------------
-(spiros )
 ; Definición estructura de datos para guardar todos los datos realacionados con
 ; un spirograph.
 ; -------------------------------------------------------------------------------
@@ -23,7 +22,6 @@
 )
 
 ;Variable spiro global de la estructura spirodata
-(spiros )
 (defvar spiro spirodata)
 
 ; -------------------------------------------------------------------------------
@@ -95,41 +93,59 @@
 ;   @r - Nuevo radiogrande del spirograph
 ; -------------------------------------------------------------------------------
 (defun radigran (r)
-    ; TODO
+    (setf (spirodata-radigran spiro) r)
 )
 
 ; -------------------------------------------------------------------------------
-; Función para cambiar el valor por defecto del radigran del spiro.
+; Función para cambiar el valor por defecto del radipetit del spiro.
 ;
 ; - Parámetros:
 ;   @r - Nuevo radiopequeño del spirograph
 ; -------------------------------------------------------------------------------
 (defun radipetit (r)
-    ; TODO
+    (setf (spirodata-rpetit spiro) r)
 )
 
 ; -------------------------------------------------------------------------------
+; Función para cambiar el valor por defecto del punto del spiro.
+;
+; - Parámetros:
+;   @p - Valor del punto a establecer
 ; -------------------------------------------------------------------------------
 (defun punt (p)
-    ; TODO
+    (setf (spirodata-punt spiro) p)
 )
 
 ; -------------------------------------------------------------------------------
+; Función para cambiar el valor por defecto del inicio del spiro.
+;
+; - Parámetros:
+;   @a - Valor del ángulo a establecer
 ; -------------------------------------------------------------------------------
 (defun inici (a)
-    ; TODO
+    (setf (spirodata-inici spiro) a)
 )
 
 ; -------------------------------------------------------------------------------
+; Función para cambiar el valor por defecto del escalado del spiro.
+;
+; - Parámetros:
+;   @e - Valor del escalado a establecer
 ; -------------------------------------------------------------------------------
 (defun escala (e)
-    ; TODO
+    (setf (spirodata-escala spiro) e)
 )
 
 ; -------------------------------------------------------------------------------
+; Función para cambiar el valor por defecto de los puntos del spiro.
+;
+; - Parámetros:
+;   @x - Valor del punto x a establecer
+;   @y - Valor del punto y a establecer
 ; -------------------------------------------------------------------------------
 (defun posicio (x y)
-    ; TODO
+    (setf (spirodata-x spiro) x)
+    (setf (spirodata-y spiro) y)
 )
 
 ; -------------------------------------------------------------------------------
