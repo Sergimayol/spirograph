@@ -48,6 +48,10 @@
     )
 )
 
+(defun radians (graus)
+    (/ (* graus (* 2 pi)) 360)
+)
+
 ; -------------------------------------------------------------------------------
 ; Función para cambiar el color del dibujo a rojo y el fondo a blanco.
 ; -------------------------------------------------------------------------------
@@ -85,13 +89,53 @@
 ;   @r - Radio del circulo
 ;   @n - Número de segmentos en los que se divide el circulo
 ; -------------------------------------------------------------------------------
-(defun cercle (x y r n)
-    (move x y)
-    (cond ((= n 0) t)
-           (t
-              ()
-           )
+(defun cercle (xi yi ri ni)
+    (move xi yi)
+    (defun cercleHelper (x y r n)
+        (cond ((equal 0 n) t)
+              (t
+                (setq xr (+ x r))
+                (setq yr (+ y r))
+                (setq xe (+ xr 
+                            (cos (
+                                  radians (* (/ 360 ni) n)
+                                )
+                            )
+                          )
+                )
+                (setq ye (+ yr 
+                            (sin (
+                                  radians (* (/ 360 ni) n)
+                                )
+                            )
+                          )
+                )
+                (print (realpart (round xe)))
+                (print (realpart (round ye)))
+                (move (realpart (round xe))  (realpart (round ye)))
+                (setq xe (+ xr 
+                            (cos (
+                                  radians (* (/ 360 ni) n)
+                                )
+                            )
+                          )
+                )
+                (setq ye (+ yr 
+                            (sin (
+                                  radians (* (/ 360 ni) n)
+                                )
+                            )
+                          )
+                )
+                (print (realpart (round xe)))
+                (print (realpart (round ye)))
+                (terpri)
+                (draw (realpart (round xe))  (realpart (round ye)))
+                (cercle x y r (- n 1))
+              )
+        )
     )
+    (cercleHelper xi yi ri ni)
 )
 
 ; -------------------------------------------------------------------------------
@@ -108,7 +152,7 @@
             (error "El valor de r no es correcto")
           )
     )
-    (cercle (getprop 'spiro x) (getprop 'spiro y) r (getprop 'spiro punt)
+    (cercle (getprop 'spiro x) (getprop 'spiro y) r (getprop 'spiro punt))
 )
 
 ; -------------------------------------------------------------------------------
@@ -125,7 +169,7 @@
             (error "El valor de r no es correcto")
           )
     )
-    (cercle (getprop 'spiro x) (getprop 'spiro y) r (getprop 'spiro punt)
+    (cercle (getprop 'spiro x) (getprop 'spiro y) r (getprop 'spiro punt))
 )
 
 ; -------------------------------------------------------------------------------
