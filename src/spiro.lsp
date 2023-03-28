@@ -53,7 +53,6 @@
 ; -------------------------------------------------------------------------------
 (defun vermell ()
     (color 255 0 0 255 255 255)
-    ; TODO: Dibujar circulo
 )
 
 ; -------------------------------------------------------------------------------
@@ -61,7 +60,6 @@
 ; -------------------------------------------------------------------------------
 (defun blau ()
     (color 0 0 255 255 255 255)
-    ; TODO: Dibujar circulo
 )
 
 ; -------------------------------------------------------------------------------
@@ -69,7 +67,6 @@
 ; -------------------------------------------------------------------------------
 (defun verd ()
     (color 0 255 0 255 255 255)
-    ; TODO: Dibujar circulo
 )
 
 ; -------------------------------------------------------------------------------
@@ -77,7 +74,6 @@
 ; -------------------------------------------------------------------------------
 (defun negre ()
     (color 0 0 0 255 255 255)
-    ; TODO: Dibujar circulo
 )
 
 ; -------------------------------------------------------------------------------
@@ -90,9 +86,10 @@
 ;   @n - Número de segmentos en los que se divide el circulo
 ; -------------------------------------------------------------------------------
 (defun cercle (x y r n)
+    (move x y)
     (cond ((= n 0) t)
            (t
-            ; TODO
+              ()
            )
     )
 )
@@ -111,6 +108,7 @@
             (error "El valor de r no es correcto")
           )
     )
+    (cercle (getprop 'spiro x) (getprop 'spiro y) r (getprop 'spiro punt)
 )
 
 ; -------------------------------------------------------------------------------
@@ -127,6 +125,7 @@
             (error "El valor de r no es correcto")
           )
     )
+    (cercle (getprop 'spiro x) (getprop 'spiro y) r (getprop 'spiro punt)
 )
 
 ; -------------------------------------------------------------------------------
@@ -143,6 +142,7 @@
             (error "El valor de p no es correcto")
           )
     )
+    (cercle (getprop 'spiro x) (getprop 'spiro y) (getprop 'spiro rgran) p)
 )
 
 ; -------------------------------------------------------------------------------
@@ -159,6 +159,7 @@
             (error "El valor de a no es correcto")
           )
     )
+    (cercle (getprop 'spiro x) (getprop 'spiro y) (getprop 'spiro rgran) (getprop 'spiro punt))
 )
 
 ; -------------------------------------------------------------------------------
@@ -175,6 +176,7 @@
             (error "El valor de e no es correcto")
           )
     )
+    (cercle (getprop 'spiro x) (getprop 'spiro y) (getprop 'spiro rgran) (getprop 'spiro punt))
 )
 
 ; -------------------------------------------------------------------------------
@@ -192,6 +194,14 @@
             (error "El valor de x no es correcto")
           )
     )
+    (cond ((contains (y (getprop 'spiro petits)))
+            (putprop 'spiro y 'y)
+          )
+          (t
+            (error "El valor de y no es correcto")
+          )
+    )
+    (cercle x y (getprop 'spiro rgran) (getprop 'spiro punt))
 )
 
 ; -------------------------------------------------------------------------------
