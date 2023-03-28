@@ -2,46 +2,49 @@
 ;   Autor 1: ;
 ;   Autor 2: ;
 
+;Variable spiro global
+(defvar spiro)
+
 ; -------------------------------------------------------------------------------
-; Definición estructura de datos para guardar todos los datos realacionados con
-; un spirograph.
+; Función para inicializar los valores por defecto de un spiro.
 ; -------------------------------------------------------------------------------
-(defstruct spirodata
-  (spiros )
-    grans
-    petits
-    (rgran 150)
-    (rpetit 50)
-    (punt 3)
-    inici 
-    (escala 1.8)
-    interior
-    x
-    y
-    (pas 0.2)
+(defun guarda-informacio ()
+    (putprop 'spiro '((150 105) (144 96)) grans)
+    (putprop 'spiro '((84 35 56)
+                      (80 33 53) 
+                      (75 31 50) 
+                      (72 29 48) 
+                      (63 25 42) 
+                      (60 23 40) 
+                      (56 21 37) 
+                      (52 19 35) 
+                      (48 17 32) 
+                      (45 16 30) 
+                      (42 14 28) 
+                      (40 13 27) 
+                      (32 9 21) 
+                      (30 8 20) 
+                      (24 5 16)) 
+        petits)
+    (putprop 'spiro 150 rgran)
+    (putprop 'spiro 50 rpetit)
+    (putprop 'spiro 3 punt)
+    (putprop 'spiro 0 inici)
+    (putprop 'spiro 1.8 escala)
+    (putprop 'spiro 0 interior)
+    (putprop 'spiro 0 x)
+    (putprop 'spiro 0 y)
+    (putprop 'spiro 0.2 pas)
 )
 
-;Variable spiro global de la estructura spirodata
-(defvar spiro spirodata)
-
-; -------------------------------------------------------------------------------
-; TODO: No entiendo que pide en el enunciado xd, yo asumo que es así
-; -------------------------------------------------------------------------------
-(defun guarda-informacio (grans petits rgran rpetit punt inici escala interior x y pas)
-    (setq spiro 
-          (make-spirodata
-              :grans grans
-              :petits petits
-              :rgran rgran
-              :rpetit rpetit
-              :punt punt
-              :inici inici
-              :escala escala
-              :interior interior
-              :x x
-              :y y
-              :pas pas
+(defun contains (e l)
+    (cond ((null l) nil)
+          ((atom (car l))
+              (cond ((equal e (car l)) t)
+                  (t (contains e (cdr l)))
+             )
           )
+          (t (contains e (car l)))
     )
 )
 
@@ -50,6 +53,7 @@
 ; -------------------------------------------------------------------------------
 (defun vermell ()
     (color 255 0 0 255 255 255)
+    ; TODO: Dibujar circulo
 )
 
 ; -------------------------------------------------------------------------------
@@ -57,6 +61,7 @@
 ; -------------------------------------------------------------------------------
 (defun blau ()
     (color 0 0 255 255 255 255)
+    ; TODO: Dibujar circulo
 )
 
 ; -------------------------------------------------------------------------------
@@ -64,6 +69,7 @@
 ; -------------------------------------------------------------------------------
 (defun verd ()
     (color 0 255 0 255 255 255)
+    ; TODO: Dibujar circulo
 )
 
 ; -------------------------------------------------------------------------------
@@ -71,6 +77,7 @@
 ; -------------------------------------------------------------------------------
 (defun negre ()
     (color 0 0 0 255 255 255)
+    ; TODO: Dibujar circulo
 )
 
 ; -------------------------------------------------------------------------------
@@ -83,27 +90,43 @@
 ;   @n - Número de segmentos en los que se divide el circulo
 ; -------------------------------------------------------------------------------
 (defun cercle (x y r n)
-    ; TODO
+    (cond ((= n 0) t)
+           (t
+            ; TODO
+           )
+    )
 )
 
 ; -------------------------------------------------------------------------------
 ; Función para cambiar el valor por defecto del radigran del spiro.
 ;
 ; - Parámetros:
-;   @r - Nuevo radiogrande del spirograph
+;   @r - Nuevo radio grande del spirograph
 ; -------------------------------------------------------------------------------
 (defun radigran (r)
-    (setf (spirodata-radigran spiro) r)
+    (cond ((contains (r (getprop 'spiro grans)))
+            (putprop 'spiro r 'rgran)
+          )
+          (t
+            (error "El valor de r no es correcto")
+          )
+    )
 )
 
 ; -------------------------------------------------------------------------------
 ; Función para cambiar el valor por defecto del radipetit del spiro.
 ;
 ; - Parámetros:
-;   @r - Nuevo radiopequeño del spirograph
+;   @r - Nuevo radio pequeño del spirograph
 ; -------------------------------------------------------------------------------
 (defun radipetit (r)
-    (setf (spirodata-rpetit spiro) r)
+    (cond ((contains (r (getprop 'spiro petits)))
+            (putprop 'spiro r 'rpetit)
+          )
+          (t
+            (error "El valor de r no es correcto")
+          )
+    )
 )
 
 ; -------------------------------------------------------------------------------
@@ -113,7 +136,13 @@
 ;   @p - Valor del punto a establecer
 ; -------------------------------------------------------------------------------
 (defun punt (p)
-    (setf (spirodata-punt spiro) p)
+    (cond ((contains (p (getprop 'spiro punt)))
+            (putprop 'spiro p 'punt)
+          )
+          (t
+            (error "El valor de p no es correcto")
+          )
+    )
 )
 
 ; -------------------------------------------------------------------------------
@@ -123,7 +152,13 @@
 ;   @a - Valor del ángulo a establecer
 ; -------------------------------------------------------------------------------
 (defun inici (a)
-    (setf (spirodata-inici spiro) a)
+    (cond ((contains (a (getprop 'spiro inici)))
+            (putprop 'spiro a 'inici)
+          )
+          (t
+            (error "El valor de a no es correcto")
+          )
+    )
 )
 
 ; -------------------------------------------------------------------------------
@@ -133,7 +168,13 @@
 ;   @e - Valor del escalado a establecer
 ; -------------------------------------------------------------------------------
 (defun escala (e)
-    (setf (spirodata-escala spiro) e)
+    (cond ((contains (e (getprop 'spiro escala)))
+            (putprop 'spiro e 'escala)
+          )
+          (t
+            (error "El valor de e no es correcto")
+          )
+    )
 )
 
 ; -------------------------------------------------------------------------------
@@ -144,8 +185,13 @@
 ;   @y - Valor del punto y a establecer
 ; -------------------------------------------------------------------------------
 (defun posicio (x y)
-    (setf (spirodata-x spiro) x)
-    (setf (spirodata-y spiro) y)
+    (cond ((contains (x (getprop 'spiro grans)))
+            (putprop 'spiro x 'x)
+          )
+          (t
+            (error "El valor de x no es correcto")
+          )
+    )
 )
 
 ; -------------------------------------------------------------------------------
@@ -153,4 +199,3 @@
 (defun reduir (m n)
     ; TODO
 )
-
