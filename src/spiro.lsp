@@ -9,32 +9,32 @@
 ; Función para inicializar los valores por defecto de un spiro.
 ; -------------------------------------------------------------------------------
 (defun guarda-informacio ()
-    (putprop 'spiro '((150 105) (144 96)) grans)
-    (putprop 'spiro '((84 35 56)
-                      (80 33 53) 
-                      (75 31 50) 
-                      (72 29 48) 
-                      (63 25 42) 
-                      (60 23 40) 
-                      (56 21 37) 
-                      (52 19 35) 
-                      (48 17 32) 
-                      (45 16 30) 
-                      (42 14 28) 
-                      (40 13 27) 
-                      (32 9 21) 
-                      (30 8 20) 
-                      (24 5 16)) 
-        petits)
-    (putprop 'spiro 150 rgran)
-    (putprop 'spiro 50 rpetit)
-    (putprop 'spiro 3 punt)
-    (putprop 'spiro 0 inici)
-    (putprop 'spiro 1.8 escala)
-    (putprop 'spiro 0 interior)
-    (putprop 'spiro 0 x)
-    (putprop 'spiro 0 y)
-    (putprop 'spiro 0.2 pas)
+    (putprop 'spiro '('(150 105) '(144 96)) 'grans)
+    (putprop 'spiro '('(84 35 56)
+                      '(80 33 53) 
+                      '(75 31 50) 
+                      '(72 29 48) 
+                      '(63 25 42) 
+                      '(60 23 40) 
+                      '(56 21 37) 
+                      '(52 19 35) 
+                      '(48 17 32) 
+                      '(45 16 30) 
+                      '(42 14 28) 
+                      '(40 13 27) 
+                      '(32 9 21) 
+                      '(30 8 20) 
+                      '(24 5 16)) 
+        'petits)
+    (putprop 'spiro 150 'rgran)
+    (putprop 'spiro 50 'rpetit)
+    (putprop 'spiro 3 'punt)
+    (putprop 'spiro 0 'inici)
+    (putprop 'spiro 1.8 'escala)
+    (putprop 'spiro 0 'interior)
+    (putprop 'spiro 0 'x)
+    (putprop 'spiro 0 'y)
+    (putprop 'spiro 0.2 'pas)
 )
 
 (defun contains (e l)
@@ -81,6 +81,24 @@
 )
 
 ; -------------------------------------------------------------------------------
+; -------------------------------------------------------------------------------
+(defun pinta (x y)
+    (draw (realpart (round (+ 320 (* 1.8 x))))
+    (realpart (round (+ 187 (* 1.8 y)))))
+)
+
+; -------------------------------------------------------------------------------
+; -------------------------------------------------------------------------------
+(defun cercle2 (x y radi pas angle)
+    (cond ((< angle 360)
+            (pinta (+ x (* radi (cos (radians (+ angle pas)))))
+                   (+ y (* radi (sin (radians (+ angle pas)))))
+            )
+            (cercle2 x y radi pas (+ angle pas)))
+      (t t)
+    )
+)
+; -------------------------------------------------------------------------------
 ; Función para dibujar un circulo de n segmentos de radio r y en el punto (x,y).
 ;
 ; - Parámetros: 
@@ -89,53 +107,13 @@
 ;   @r - Radio del circulo
 ;   @n - Número de segmentos en los que se divide el circulo
 ; -------------------------------------------------------------------------------
-(defun cercle (xi yi ri ni)
-    (move xi yi)
-    (defun cercleHelper (x y r n)
-        (cond ((equal 0 n) t)
-              (t
-                (setq xr (+ x r))
-                (setq yr (+ y r))
-                (setq xe (+ xr 
-                            (cos (
-                                  radians (* (/ 360 ni) n)
-                                )
-                            )
-                          )
-                )
-                (setq ye (+ yr 
-                            (sin (
-                                  radians (* (/ 360 ni) n)
-                                )
-                            )
-                          )
-                )
-                (print (realpart (round xe)))
-                (print (realpart (round ye)))
-                (move (realpart (round xe))  (realpart (round ye)))
-                (setq xe (+ xr 
-                            (cos (
-                                  radians (* (/ 360 ni) n)
-                                )
-                            )
-                          )
-                )
-                (setq ye (+ yr 
-                            (sin (
-                                  radians (* (/ 360 ni) n)
-                                )
-                            )
-                          )
-                )
-                (print (realpart (round xe)))
-                (print (realpart (round ye)))
-                (terpri)
-                (draw (realpart (round xe))  (realpart (round ye)))
-                (cercle x y r (- n 1))
-              )
-        )
+(defun cercle (x y r n)
+    (defun mou (x y)
+        (move (realpart (round (+ 320 (* 1.8 x))))
+        (realpart (round (+ 187 (* 1.8 y)))))
     )
-    (cercleHelper xi yi ri ni)
+    (mou (+ x r) y)
+    (cercle2 x y r(/ 360 n) 0)
 )
 
 ; -------------------------------------------------------------------------------
@@ -145,14 +123,8 @@
 ;   @r - Nuevo radio grande del spirograph
 ; -------------------------------------------------------------------------------
 (defun radigran (r)
-    (cond ((contains (r (getprop 'spiro grans)))
-            (putprop 'spiro r 'rgran)
-          )
-          (t
-            (error "El valor de r no es correcto")
-          )
-    )
-    (cercle (getprop 'spiro x) (getprop 'spiro y) r (getprop 'spiro punt))
+    (putprop 'spiro r 'rgran)
+    (cercle (get 'spiro 'x) (get 'spiro 'y) r (get 'spiro 'punt))
 )
 
 ; -------------------------------------------------------------------------------
@@ -162,14 +134,8 @@
 ;   @r - Nuevo radio pequeño del spirograph
 ; -------------------------------------------------------------------------------
 (defun radipetit (r)
-    (cond ((contains (r (getprop 'spiro petits)))
-            (putprop 'spiro r 'rpetit)
-          )
-          (t
-            (error "El valor de r no es correcto")
-          )
-    )
-    (cercle (getprop 'spiro x) (getprop 'spiro y) r (getprop 'spiro punt))
+    (putprop 'spiro r 'rpetit)
+    (cercle (get 'spiro 'x) (get 'spiro 'y) r (get 'spiro 'punt))
 )
 
 ; -------------------------------------------------------------------------------
@@ -179,14 +145,7 @@
 ;   @p - Valor del punto a establecer
 ; -------------------------------------------------------------------------------
 (defun punt (p)
-    (cond ((contains (p (getprop 'spiro punt)))
-            (putprop 'spiro p 'punt)
-          )
-          (t
-            (error "El valor de p no es correcto")
-          )
-    )
-    (cercle (getprop 'spiro x) (getprop 'spiro y) (getprop 'spiro rgran) p)
+    (putprop 'spiro p 'punt)
 )
 
 ; -------------------------------------------------------------------------------
@@ -196,14 +155,7 @@
 ;   @a - Valor del ángulo a establecer
 ; -------------------------------------------------------------------------------
 (defun inici (a)
-    (cond ((contains (a (getprop 'spiro inici)))
-            (putprop 'spiro a 'inici)
-          )
-          (t
-            (error "El valor de a no es correcto")
-          )
-    )
-    (cercle (getprop 'spiro x) (getprop 'spiro y) (getprop 'spiro rgran) (getprop 'spiro punt))
+    (putprop 'spiro a 'inici)
 )
 
 ; -------------------------------------------------------------------------------
@@ -213,14 +165,7 @@
 ;   @e - Valor del escalado a establecer
 ; -------------------------------------------------------------------------------
 (defun escala (e)
-    (cond ((contains (e (getprop 'spiro escala)))
-            (putprop 'spiro e 'escala)
-          )
-          (t
-            (error "El valor de e no es correcto")
-          )
-    )
-    (cercle (getprop 'spiro x) (getprop 'spiro y) (getprop 'spiro rgran) (getprop 'spiro punt))
+    (putprop 'spiro e 'escala)
 )
 
 ; -------------------------------------------------------------------------------
@@ -231,25 +176,13 @@
 ;   @y - Valor del punto y a establecer
 ; -------------------------------------------------------------------------------
 (defun posicio (x y)
-    (cond ((contains (x (getprop 'spiro grans)))
-            (putprop 'spiro x 'x)
-          )
-          (t
-            (error "El valor de x no es correcto")
-          )
-    )
-    (cond ((contains (y (getprop 'spiro petits)))
-            (putprop 'spiro y 'y)
-          )
-          (t
-            (error "El valor de y no es correcto")
-          )
-    )
-    (cercle x y (getprop 'spiro rgran) (getprop 'spiro punt))
+    (putprop 'spiro x 'x)
+    (putprop 'spiro y 'y)
 )
 
 ; -------------------------------------------------------------------------------
 ; -------------------------------------------------------------------------------
 (defun reduir (m n)
-    ; TODO
+    (setq mcd (gcd m n))
+    (list (/ m mcd) (/ n mcd))
 )
