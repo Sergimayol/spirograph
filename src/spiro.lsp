@@ -189,10 +189,17 @@
 )
 
 ; -------------------------------------------------------------------------------
-; Función que simula el comportamiento de un spirograph con un número de pasos p, con los radios gran i petit, con la distancia t, un incrementador inc en cada paso y con el inicio del dibujado al ángulado dado en grados.
+; Función que genera un spirographo de manera recursiva.
 ; -------------------------------------------------------------------------------
 (defun spirograph (p gran petit te inc inici)
-
+    (cond ((< p 0) t)
+          (t
+            (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
+            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p )))))
+            (pinta x y)
+            (spirograph (- p inc) gran petit te inc inici)
+          )
+    )
 )
 
 ; -------------------------------------------------------------------------------
