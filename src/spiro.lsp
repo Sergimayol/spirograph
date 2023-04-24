@@ -191,7 +191,7 @@
 ; -------------------------------------------------------------------------------
 ; Función que simula el comportamiento de un spirograph con un número de pasos p, con los radios gran i petit, con la distancia t, un incrementador inc en cada paso y con el inicio del dibujado al ángulado dado en grados.
 ; -------------------------------------------------------------------------------
-(defun spirograph (p gran petit t inc inici)
+(defun spirograph (p gran petit te inc inici)
 
 )
 
@@ -217,25 +217,25 @@
 ; -------------------------------------------------------------------------------
 ; Funcion para dibujar un hipotrocoide
 ; -------------------------------------------------------------------------------
-(defun hipotrocoide (gran petita a t)
+(defun hipotrocoide (gran petita a te)
     (list 
-        (+ (* (- gran petita) (cos (/ (* petita a ) gran))) (* t (cos (* (- 1 (/ petita gran)) a )))) ; x
-        (- (* (- gran petita) (sin (/ (* petita a ) gran))) (* t (sin (* (- 1 (/ petita gran)) a )))) ; y   
+        (+ (* (- gran petita) (cos (/ (* petita a ) gran))) (* te (cos (* (- 1 (/ petita gran)) a )))) ; x
+        (- (* (- gran petita) (sin (/ (* petita a ) gran))) (* te (sin (* (- 1 (/ petita gran)) a )))) ; y   
     )
 )
 
 ; -------------------------------------------------------------------------------
 ; Funcion para dibujar un epitrocoide
 ; -------------------------------------------------------------------------------
-(defun epitrocoide (gran petita a t)
+(defun epitrocoide (gran petita a te)
     (list 
-        (+ (* (- gran petita) (cos (/ (* petita a ) gran))) (* t (cos (* (+ 1 (/ petita gran)) a )))) ; x
-        (- (* (- gran petita) (sin (/ (* petita a ) gran))) (* t (sin (* (+ 1 (/ petita gran)) a )))) ; y   
+        (+ (* (- gran petita) (cos (/ (* petita a ) gran))) (* te (cos (* (+ 1 (/ petita gran)) a )))) ; x
+        (- (* (- gran petita) (sin (/ (* petita a ) gran))) (* te (sin (* (+ 1 (/ petita gran)) a )))) ; y   
     )
 )
 
 ; -------------------------------------------------------------------------------
-; Funcion para rotar un punto (x,y) según el ángulo a
+; Funcion para rotar un punto (x,y) según el angulo a
 ; -------------------------------------------------------------------------------
 (defun rotar (x y a)
     (list 
