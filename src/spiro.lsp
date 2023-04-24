@@ -212,13 +212,27 @@
     (setq pas (round (/ pas inc)))
     (putprop 'spiro pas 'pas)
     (spirograph 360 gran petit p inc inici)
-    
+
 )
 ; -------------------------------------------------------------------------------
 ; Llama a la función sphirograph y le pasa los valores de la variable spiro
 ; -------------------------------------------------------------------------------
 (defun roda ()
     (spirograph (get 'spiro 'pas) (get 'spiro 'rgran) (get 'spiro 'rpetit) (get 'spiro 'escala) (get 'spiro 'punt) (get 'spiro 'inici))
+)
+
+; -------------------------------------------------------------------------------
+; Función que hace lo mismo que roda pero con un número de vueltas determinado
+; -------------------------------------------------------------------------------
+(defun roda-voltes (n)
+    (spirograph (* n 360) (get 'spiro 'rgran) (get 'spiro 'rpetit) (get 'spiro 'escala) (get 'spiro 'punt) (get 'spiro 'inici))
+)
+
+; -------------------------------------------------------------------------------
+; Función que hace lo mismo que roda-voltes pero se le pasan los parámetro los argumentos
+; -------------------------------------------------------------------------------
+(defun roda-voltes-args (voltes gran petit p in inici)
+    (spirograph (* voltes 360) gran petit p in inici)
 )
     
 ; -------------------------------------------------------------------------------
