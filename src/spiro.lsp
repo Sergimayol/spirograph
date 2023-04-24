@@ -36,6 +36,7 @@
     (putprop 'spiro 0 'y)
     (putprop 'spiro 20 'pas)
 )
+(guarda-informacio)
 
 (defun contains (e l)
     (cond ((null l) nil)
@@ -264,7 +265,3 @@
         (- (* x (sin a)) (* y (cos a)))
     )
 )
-
-
-
-
