@@ -34,7 +34,7 @@
     (putprop 'spiro 0 'interior)
     (putprop 'spiro 0 'x)
     (putprop 'spiro 0 'y)
-    (putprop 'spiro 0.2 'pas)
+    (putprop 'spiro 20 'pas)
 )
 
 (defun contains (e l)
@@ -203,24 +203,24 @@
 )
 
 ; -------------------------------------------------------------------------------
+; Función que genera un spirographo con el número de vueltas necesarias para acabar todo el trazado, se debe realizar recursivamente
 ; -------------------------------------------------------------------------------
 (defun spiro (gran petit p inc inici)
-    (write "p = " p)
+    (setq pas (reduir (* 360 p) (+ gran petit)))
+    (setq pas (car pas))
+    (setq pas (round (/ 360 pas)))
+    (setq pas (round (/ pas inc)))
+    (putprop 'spiro pas 'pas)
+    (spirograph 360 gran petit p inc inici)
+    
 )
-
 ; -------------------------------------------------------------------------------
-; Funcion para dibujar un spirograph cogiendo los valores actuales del spiro.
+; Llama a la función sphirograph y le pasa los valores de la variable spiro
 ; -------------------------------------------------------------------------------
 (defun roda ()
-    (spirograph (get 'spiro 'pas)
-                (get 'spiro 'rgran)
-                (get 'spiro 'rpetit)
-                (get 'spiro 'punt)
-                (get 'spiro 'escala)
-                (get 'spiro 'inici)
-    )
+    (spirograph (get 'spiro 'pas) (get 'spiro 'rgran) (get 'spiro 'rpetit) (get 'spiro 'escala) (get 'spiro 'punt) (get 'spiro 'inici))
 )
-
+    
 ; -------------------------------------------------------------------------------
 ; Funcion para dibujar un hipotrocoide
 ; -------------------------------------------------------------------------------
