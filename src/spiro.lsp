@@ -181,6 +181,7 @@
 )
 
 ; -------------------------------------------------------------------------------
+; Función para calcular la fracción reducida y devolver una lista
 ; -------------------------------------------------------------------------------
 (defun reduir (m n)
     (setq mcd (gcd m n))
@@ -188,9 +189,10 @@
 )
 
 ; -------------------------------------------------------------------------------
+; Función que simula el comportamiento de un spirograph con un número de pasos p, con los radios gran i petit, con la distancia t, un incrementador inc en cada paso y con el inicio del dibujado al ángulado dado en grados.
 ; -------------------------------------------------------------------------------
 (defun spirograph (p gran petit t inc inici)
-    (write "p = " p)
+
 )
 
 ; -------------------------------------------------------------------------------
@@ -198,3 +200,50 @@
 (defun spiro (gran petit p inc inici)
     (write "p = " p)
 )
+
+; -------------------------------------------------------------------------------
+; Funcion para dibujar un spirograph cogiendo los valores actuales del spiro.
+; -------------------------------------------------------------------------------
+(defun roda ()
+    (spirograph (get 'spiro 'pas)
+                (get 'spiro 'rgran)
+                (get 'spiro 'rpetit)
+                (get 'spiro 'punt)
+                (get 'spiro 'escala)
+                (get 'spiro 'inici)
+    )
+)
+
+; -------------------------------------------------------------------------------
+; Funcion para dibujar un hipotrocoide
+; -------------------------------------------------------------------------------
+(defun hipotrocoide (gran petita a t)
+    (list 
+        (+ (* (- gran petita) (cos (/ (* petita a ) gran))) (* t (cos (* (- 1 (/ petita gran)) a )))) ; x
+        (- (* (- gran petita) (sin (/ (* petita a ) gran))) (* t (sin (* (- 1 (/ petita gran)) a )))) ; y   
+    )
+)
+
+; -------------------------------------------------------------------------------
+; Funcion para dibujar un epitrocoide
+; -------------------------------------------------------------------------------
+(defun epitrocoide (gran petita a t)
+    (list 
+        (+ (* (- gran petita) (cos (/ (* petita a ) gran))) (* t (cos (* (+ 1 (/ petita gran)) a )))) ; x
+        (- (* (- gran petita) (sin (/ (* petita a ) gran))) (* t (sin (* (+ 1 (/ petita gran)) a )))) ; y   
+    )
+)
+
+; -------------------------------------------------------------------------------
+; Funcion para rotar un punto (x,y) según el ángulo a
+; -------------------------------------------------------------------------------
+(defun rotar (x y a)
+    (list 
+        (+ (* x (cos a)) (* y (sin a)))
+        (- (* x (sin a)) (* y (cos a)))
+    )
+)
+
+
+
+
