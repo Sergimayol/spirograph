@@ -99,6 +99,12 @@
       (t t)
     )
 )
+
+(defun mou (x y)
+    (move (realpart (round (+ 320 (* 1.8 x))))
+    (realpart (round (+ 187 (* 1.8 y)))))
+)
+
 ; -------------------------------------------------------------------------------
 ; Función para dibujar un circulo de n segmentos de radio r y en el punto (x,y).
 ;
@@ -109,10 +115,6 @@
 ;   @n - Número de segmentos en los que se divide el circulo
 ; -------------------------------------------------------------------------------
 (defun cercle (x y r n)
-    (defun mou (x y)
-        (move (realpart (round (+ 320 (* 1.8 x))))
-        (realpart (round (+ 187 (* 1.8 y)))))
-    )
     (mou (+ x r) y)
     (cercle2 x y r(/ 360 n) 0)
 )
@@ -213,7 +215,6 @@
     (setq pas (round (/ pas inc)))
     (putprop 'spiro pas 'pas)
     (spirograph 360 gran petit p inc inici)
-
 )
 ; -------------------------------------------------------------------------------
 ; Llama a la función sphirograph y le pasa los valores de la variable spiro
