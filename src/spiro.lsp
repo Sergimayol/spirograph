@@ -197,8 +197,13 @@
 (defun spirograph (p gran petit te inc inici)
     (cond ((< p 0) t)
           (t
+            ; Calcular x e y
             (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
             (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p )))))
+            ; Rotar x e y
+            (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
+            (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
+            ; Pintar x e y            
             (pinta x y)
             (spirograph (- p inc) gran petit te inc inici)
           )
