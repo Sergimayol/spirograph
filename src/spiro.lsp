@@ -195,6 +195,15 @@
 ; Función que genera un spirographo de manera recursiva.
 ; -------------------------------------------------------------------------------
 (defun spirograph (p gran petit te inc inici)
+    (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
+    (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p )))))
+    (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
+    (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
+    (mou x y) 
+    (spirograph2 p gran petit te inc inici)
+)
+
+(defun spirograph2 (p gran petit te inc inici)
     (cond ((< p 0) t)
           (t
             ; Calcular x e y
@@ -205,7 +214,7 @@
             (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
             ; Pintar x e y            
             (pinta x y)
-            (spirograph (- p inc) gran petit te inc inici)
+            (spirograph2 (- p inc) gran petit te inc inici)
           )
     )
 )
@@ -219,6 +228,7 @@
     (setq pas (round (/ 360 pas)))
     (setq pas (round (/ pas inc)))
     (putprop 'spiro pas 'pas)
+    ; Calcular la t, las vueltas
     (spirograph 360 gran petit p inc inici)
 )
 ; -------------------------------------------------------------------------------
