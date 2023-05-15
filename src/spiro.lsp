@@ -235,7 +235,7 @@
 ; Llama a la función sphirograph y le pasa los valores de la variable spiro
 ; -------------------------------------------------------------------------------
 (defun roda ()
-    (spirograph (get 'spiro 'pas) (get 'spiro 'rgran) (get 'spiro 'rpetit) (get 'spiro 'escala) (get 'spiro 'punt) (get 'spiro 'inici))
+    (spirograph (get 'spiro 'pas) (get 'spiro 'rgran) (get 'spiro 'rpetit) (get 'spiro 'interior) (get 'spiro 'escala) (get 'spiro 'inici))
 )
 
 ; -------------------------------------------------------------------------------
