@@ -223,14 +223,14 @@
 ; Función que genera un spirographo con el número de vueltas necesarias para acabar todo el trazado, se debe realizar recursivamente
 ; -------------------------------------------------------------------------------
 (defun spiro (gran petit p inc inici)
-    (setq pas (reduir (* 360 p) (+ gran petit)))
-    (setq pas (car pas))
-    (setq pas (round (/ 360 pas)))
-    (setq pas (round (/ pas inc)))
-    (putprop 'spiro pas 'pas)
-    ; Calcular la t, las vueltas
-    (spirograph 360 gran petit p inc inici)
+    (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
+    (setq vueltas (/ distancia (* petit 2)))
+    (spirograph (* vueltas 360) gran petit p inc inici)
 )
+
+
+
+
 ; -------------------------------------------------------------------------------
 ; Llama a la función sphirograph y le pasa los valores de la variable spiro
 ; -------------------------------------------------------------------------------
