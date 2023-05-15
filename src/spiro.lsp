@@ -31,7 +31,7 @@
     (putprop 'spiro 3 'punt)
     (putprop 'spiro 0 'inici)
     (putprop 'spiro 1.8 'escala)
-    (putprop 'spiro 0 'interior)
+    (putprop 'spiro t 'interior)
     (putprop 'spiro 0 'x)
     (putprop 'spiro 0 'y)
     (putprop 'spiro 20 'pas)
@@ -248,8 +248,14 @@
 ; -------------------------------------------------------------------------------
 ; Función que hace lo mismo que roda-voltes pero se le pasan los parámetro los argumentos
 ; -------------------------------------------------------------------------------
-(defun roda-voltes-args (voltes gran petit p in inici)
+(defun spiro-voltes (voltes gran petit p in inici)
     (spirograph (* voltes 360) gran petit p in inici)
+)
+
+(defun spiros (l)
+)
+
+(defun dibuix()
 )
     
 ; -------------------------------------------------------------------------------
