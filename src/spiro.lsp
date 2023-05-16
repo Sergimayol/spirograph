@@ -260,9 +260,6 @@
 
 
 
-; -------------------------------------------------------------------------------
-; Llama a la función sphirograph y le pasa los valores de la variable spiro
-; -------------------------------------------------------------------------------
 (defun roda ()
     (print (get 'spiro 'rgran))
     (print (get 'spiro 'rpetit))
@@ -275,15 +272,13 @@
     (setq inici (get 'spiro 'inici))
     (setq escala (get 'spiro 'escala))
     (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
+    (print distancia)
     (setq vueltas (/ distancia (* petit 2)))
     (print vueltas)
-    
     (setq te (* vueltas 360))
     (print te)
-    (print distancia)
-    (print (- distancia te))
     ; Me está fallando la te creo
-    (spirograph (* 360 escala) gran petit te p inici)
+    (spirograph (* escala 360) gran petit te p inici)
 )
 
 ; -------------------------------------------------------------------------------
