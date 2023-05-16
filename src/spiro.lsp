@@ -261,19 +261,12 @@
 ; Llama a la función sphirograph y le pasa los valores de la variable spiro
 ; -------------------------------------------------------------------------------
 (defun roda ()
-    (print (get 'spiro 'rgran))
-    (print (get 'spiro 'rpetit))
-    (print (get 'spiro 'pas))
-    (print (get 'spiro 'escala))
-    (print (get 'spiro 'inici))
     (setq gran (get 'spiro 'rgran))
     (setq petit (get 'spiro 'rpetit))
     (setq p (get 'spiro 'pas))
     (setq inici (get 'spiro 'inici))
     (setq escala (get 'spiro 'escala))
-    ; Me está fallando la te creo
     (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
-    (print te)
     (spirograph (* escala 360) gran petit (* te 2) p inici)
 )
 
@@ -283,7 +276,6 @@
 (defun roda-voltes (n)
     (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
     (setq escala (get 'spiro 'escala))
-    (print te)
     (spirograph (/ 360 (* n escala)) (get 'spiro 'rgran) (get 'spiro 'rpetit) (* te 2) (get 'spiro 'pas) (get 'spiro 'inici))
 )
 
@@ -292,13 +284,12 @@
 ; -------------------------------------------------------------------------------
 (defun spiro-voltes (voltes gran petit p in inici)
     (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
-    (print te)
     (spirograph (/ 360 (* voltes escala)) gran petit (* te 2) in inici)
 )
 
 (defun spiros (l)
   (dolist (params l)
-    (apply 'spiro params))
+    (apply 'spiro params)) 
 )
 
 
