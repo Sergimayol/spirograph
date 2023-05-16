@@ -257,9 +257,9 @@
     (spirograph (* vueltas 360) gran petit p inc inici)
 )
 
-
-
-
+; -------------------------------------------------------------------------------
+; Llama a la función sphirograph y le pasa los valores de la variable spiro
+; -------------------------------------------------------------------------------
 (defun roda ()
     (print (get 'spiro 'rgran))
     (print (get 'spiro 'rpetit))
@@ -271,32 +271,36 @@
     (setq p (get 'spiro 'pas))
     (setq inici (get 'spiro 'inici))
     (setq escala (get 'spiro 'escala))
-    (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
-    (print distancia)
-    (setq vueltas (/ distancia (* petit 2)))
-    (print vueltas)
-    (setq te (* vueltas 360))
-    (print te)
     ; Me está fallando la te creo
-    (spirograph (* escala 360) gran petit te p inici)
+    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
+    (print te)
+    (spirograph (* escala 360) gran petit (* te 2) p inici)
 )
 
 ; -------------------------------------------------------------------------------
 ; Función que hace lo mismo que roda pero con un número de vueltas determinado
 ; -------------------------------------------------------------------------------
 (defun roda-voltes (n)
-    (spirograph (* n 360) (get 'spiro 'rgran) (get 'spiro 'rpetit) (get 'spiro 'escala) (get 'spiro 'punt) (get 'spiro 'inici))
+    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
+    (setq escala (get 'spiro 'escala))
+    (print te)
+    (spirograph (/ 360 (* n escala)) (get 'spiro 'rgran) (get 'spiro 'rpetit) (* te 2) (get 'spiro 'pas) (get 'spiro 'inici))
 )
 
 ; -------------------------------------------------------------------------------
 ; Función que hace lo mismo que roda-voltes pero se le pasan los parámetro los argumentos
 ; -------------------------------------------------------------------------------
 (defun spiro-voltes (voltes gran petit p in inici)
-    (spirograph (* voltes 360) gran petit p in inici)
+    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
+    (print te)
+    (spirograph (/ 360 (* voltes escala)) gran petit (* te 2) in inici)
 )
 
 (defun spiros (l)
+  (dolist (params l)
+    (apply 'spiro params))
 )
+
 
 (defun dibuix()
 )
