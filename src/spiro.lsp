@@ -275,12 +275,15 @@
     (setq inici (get 'spiro 'inici))
     (setq escala (get 'spiro 'escala))
     (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
-    (print distancia)
     (setq vueltas (/ distancia (* petit 2)))
     (print vueltas)
+    
     (setq te (* vueltas 360))
     (print te)
-    (spirograph (* 360 p) gran petit te escala inici)
+    (print distancia)
+    (print (- distancia te))
+    ; Me está fallando la te creo
+    (spirograph (* 360 escala) gran petit te p inici)
 )
 
 ; -------------------------------------------------------------------------------
