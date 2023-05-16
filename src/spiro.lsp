@@ -26,15 +26,15 @@
                       '(30 8 20) 
                       '(24 5 16)) 
         'petits)
-    (putprop 'spiro 150 'rgran)
-    (putprop 'spiro 50 'rpetit)
+    (putprop 'spiro 105 'rgran)
+    (putprop 'spiro 72 'rpetit)
     (putprop 'spiro 3 'punt)
     (putprop 'spiro 0 'inici)
-    (putprop 'spiro 1.8 'escala)
+    (putprop 'spiro 1.5 'escala)
     (putprop 'spiro t 'interior)
     (putprop 'spiro 0 'x)
     (putprop 'spiro 0 'y)
-    (putprop 'spiro 20 'pas)
+    (putprop 'spiro 0.5 'pas)
 )
 (guarda-informacio)
 
@@ -195,23 +195,36 @@
 ; Función que genera un spirographo de manera recursiva.
 ; -------------------------------------------------------------------------------
 (defun spirograph (p gran petit te inc inici)
-    (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
-    (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p )))))
+    (print p)
+    ;Hipotrocoide
+    (cond ((or (= gran 144) (= gran 150))
+           (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
+           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
+    ;Epitrocoide
+          ((or (= gran 96) (= gran 105))
+           (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
+           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
+          (t (error "Gran debe tener el valor de 144, 150, 96 o 105")))
     (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
     (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
     (mou x y) 
     (spirograph2 p gran petit te inc inici)
 )
 
+
+
 (defun spirograph2 (p gran petit te inc inici)
     (cond ((< p 0) t)
           (t
-            ; Calcular x e y
-            (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
-            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p )))))
-            ; Rotar x e y
-            (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
-            (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
+    (cond ((or (= gran 144) (= gran 150))
+           (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
+           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
+          ((or (= gran 96) (= gran 105))
+           (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
+           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
+          (t (error "Gran debe tener el valor de 144, 150, 96 o 105")))
+        (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
+        (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
             ; Pintar x e y            
             (pinta x y)
             (spirograph2 (- p inc) gran petit te inc inici)
@@ -220,7 +233,7 @@
 )
 
 ; -------------------------------------------------------------------------------
-; Función que genera un spirographo con el número de vueltas necesarias para acabar todo el trazado, se debe realizar recursivamente
+; Función que genera un spirographo con el número de vueltas necesarias para acabar todo el trazado.
 ; -------------------------------------------------------------------------------
 (defun spiro (gran petit p inc inici)
     (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
@@ -239,7 +252,8 @@
               ((= p 12) 13)
               ((= p 13) 9)
               ((= p 14) 8)
-              ((= p 15) 5)))
+              ((= p 15) 5)
+              (t (error "El valor de p debe estar entre 1 y 15"))))
     (spirograph (* vueltas 360) gran petit p inc inici)
 )
 
@@ -250,7 +264,23 @@
 ; Llama a la función sphirograph y le pasa los valores de la variable spiro
 ; -------------------------------------------------------------------------------
 (defun roda ()
-    (spirograph (get 'spiro 'pas) (get 'spiro 'rgran) (get 'spiro 'rpetit) (get 'spiro 'interior) (get 'spiro 'escala) (get 'spiro 'inici))
+    (print (get 'spiro 'rgran))
+    (print (get 'spiro 'rpetit))
+    (print (get 'spiro 'pas))
+    (print (get 'spiro 'escala))
+    (print (get 'spiro 'inici))
+    (setq gran (get 'spiro 'rgran))
+    (setq petit (get 'spiro 'rpetit))
+    (setq p (get 'spiro 'pas))
+    (setq inici (get 'spiro 'inici))
+    (setq escala (get 'spiro 'escala))
+    (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
+    (print distancia)
+    (setq vueltas (/ distancia (* petit 2)))
+    (print vueltas)
+    (setq te (* vueltas 360))
+    (print te)
+    (spirograph (* 360 p) gran petit te escala inici)
 )
 
 ; -------------------------------------------------------------------------------
