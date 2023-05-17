@@ -196,6 +196,7 @@
 ; -------------------------------------------------------------------------------
 (defun spirograph (p gran petit te inc inici)
     (print p)
+    ;Variable interior
     ;Hipotrocoide
     (cond ((or (= gran 144) (= gran 150))
            (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
@@ -205,6 +206,7 @@
            (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
           (t (error "Gran debe tener el valor de 144, 150, 96 o 105")))
+    ;Rotar los puntos con el ángulo inicial
     (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
     (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
     (mou x y) 
