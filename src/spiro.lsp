@@ -26,15 +26,15 @@
                       '(30 8 20) 
                       '(24 5 16)) 
         'petits)
-    (putprop 'spiro 105 'rgran)
-    (putprop 'spiro 72 'rpetit)
-    (putprop 'spiro 3 'punt)
-    (putprop 'spiro 0 'inici)
-    (putprop 'spiro 1.5 'escala)
-    (putprop 'spiro t 'interior)
-    (putprop 'spiro 0 'x)
-    (putprop 'spiro 0 'y)
-    (putprop 'spiro 0.5 'pas)
+    (putprop 'spiro 105 'rgran) ; Radio grande
+    (putprop 'spiro 72 'rpetit) ; Radio pequeño
+    (putprop 'spiro 3 'punt) ; Numero del punto a partir del cual se dibuja
+    (putprop 'spiro 0 'inici) ; Angulo en grados del circulo gran inicial
+    (putprop 'spiro 1.5 'escala) ; Valor que escalará el dibujo
+    (putprop 'spiro t 'interior) ; Booleano que indica si se dibuja el interior
+    (putprop 'spiro 0 'x) ; Coordenada x
+    (putprop 'spiro 0 'y) ; Coordenada y
+    (putprop 'spiro 0.5 'pas) ; Variación del ángulo
 )
 (guarda-informacio)
 
@@ -268,7 +268,8 @@
     (setq p (get 'spiro 'pas))
     (setq inici (get 'spiro 'inici))
     (setq escala (get 'spiro 'escala))
-    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
+    (setq punt (get 'spiro 'punt))
+    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* punt pi) 180))))))
     (spirograph (* escala 360) gran petit (* te 2) p inici)
 )
 
@@ -276,7 +277,8 @@
 ; Función que hace lo mismo que roda pero con un número de vueltas determinado
 ; -------------------------------------------------------------------------------
 (defun roda-voltes (n)
-    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
+    (setq punt (get 'spiro 'punt))
+    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* punt pi) 180))))))
     (setq escala (get 'spiro 'escala))
     (spirograph (/ 360 (* n escala)) (get 'spiro 'rgran) (get 'spiro 'rpetit) (* te 2) (get 'spiro 'pas) (get 'spiro 'inici))
 )
