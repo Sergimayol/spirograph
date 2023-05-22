@@ -23,5 +23,5 @@
 - [x] (roda)
 - [x] (roda-voltes n)
 - [x] (spiro-voltes voltes gran petit p in inici)
-- [ ] (spiros l)
+- [x] (spiros l)
 - [ ] (dibuix)
