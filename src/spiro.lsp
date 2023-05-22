@@ -195,13 +195,11 @@
 ; Función que genera un spirographo de manera recursiva.
 ; -------------------------------------------------------------------------------
 (defun spirograph (p gran petit te inc inici)
-    (print p)
-    ;Variable interior
-    ;Hipotrocoide
-    (cond ((or (= gran 144) (= gran 150))
-           (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
-           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
     ;Epitrocoide
+    (cond ((or (= gran 144) (= gran 150))
+           (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
+           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
+    ;Hipotrocoide
           ((or (= gran 96) (= gran 105))
            (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
@@ -209,22 +207,22 @@
     ;Rotar los puntos con el ángulo inicial
     (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
     (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
+    ; Movemos x e y
     (mou x y) 
     (spirograph2 p gran petit te inc inici)
 )
-
 
 
 (defun spirograph2 (p gran petit te inc inici)
     (cond ((< p 0) t)
           (t
     (cond ((or (= gran 144) (= gran 150))
-           (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
+           (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
           ((or (= gran 96) (= gran 105))
            (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
-          (t (error "Gran debe tener el valor de 144, 150, 96 o 105")))
+           )
         (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
         (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
             ; Pintar x e y            
@@ -269,7 +267,23 @@
     (setq inici (get 'spiro 'inici))
     (setq escala (get 'spiro 'escala))
     (setq punt (get 'spiro 'punt))
-    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* punt pi) 180))))))
+    (setq te (cond ((= punt 1) 35)
+              ((= punt 2) 33)
+              ((= punt 3) 31)
+              ((= punt 4) 29)
+              ((= punt 5) 25)
+              ((= punt 6) 23)
+              ((= punt 7) 21)
+              ((= punt 8) 19)
+              ((= punt 9) 17)
+              ((= punt 10) 16)      
+              ((= punt 11) 14)
+              ((= punt 12) 13)
+              ((= punt 13) 9)
+              ((= punt 14) 8)
+              ((= punt 15) 5)))
+    (print te)
+    ;Hay que tener en cuenta el rpetit ahora que ya sabemos cual es el punto
     (spirograph (* escala 360) gran petit (* te 2) p inici)
 )
 
@@ -278,8 +292,22 @@
 ; -------------------------------------------------------------------------------
 (defun roda-voltes (n)
     (setq punt (get 'spiro 'punt))
-    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* punt pi) 180))))))
     (setq escala (get 'spiro 'escala))
+    (setq te (cond ((= punt 1) 35)
+              ((= punt 2) 33)
+              ((= punt 3) 31)
+              ((= punt 4) 29)
+              ((= punt 5) 25)
+              ((= punt 6) 23)
+              ((= punt 7) 21)
+              ((= punt 8) 19)
+              ((= punt 9) 17)
+              ((= punt 10) 16)      
+              ((= punt 11) 14)
+              ((= punt 12) 13)
+              ((= punt 13) 9)
+              ((= punt 14) 8)
+              ((= punt 15) 5)))
     (spirograph (/ 360 (* n escala)) (get 'spiro 'rgran) (get 'spiro 'rpetit) (* te 2) (get 'spiro 'pas) (get 'spiro 'inici))
 )
 
@@ -287,9 +315,24 @@
 ; Función que hace lo mismo que roda-voltes pero se le pasan los parámetro los argumentos
 ; -------------------------------------------------------------------------------
 (defun spiro-voltes (voltes gran petit p in inici)
-    (setq te (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
+    (setq te (cond ((= punt 1) 35)
+              ((= punt 2) 33)
+              ((= punt 3) 31)
+              ((= punt 4) 29)
+              ((= punt 5) 25)
+              ((= punt 6) 23)
+              ((= punt 7) 21)
+              ((= punt 8) 19)
+              ((= punt 9) 17)
+              ((= punt 10) 16)      
+              ((= punt 11) 14)
+              ((= punt 12) 13)
+              ((= punt 13) 9)
+              ((= punt 14) 8)
+              ((= punt 15) 5)))
     (spirograph (/ 360 (* voltes escala)) gran petit (* te 2) in inici)
 )
+
 
 (defun spiros (l)
   (dolist (params l)
@@ -300,32 +343,3 @@
 (defun dibuix()
 )
     
-; -------------------------------------------------------------------------------
-; Funcion para dibujar un hipotrocoide
-; -------------------------------------------------------------------------------
-(defun hipotrocoide (gran petita a te)
-    (list 
-        (+ (* (- gran petita) (cos (/ (* petita a ) gran))) (* te (cos (* (- 1 (/ petita gran)) a )))) ; x
-        (- (* (- gran petita) (sin (/ (* petita a ) gran))) (* te (sin (* (- 1 (/ petita gran)) a )))) ; y   
-    )
-)
-
-; -------------------------------------------------------------------------------
-; Funcion para dibujar un epitrocoide
-; -------------------------------------------------------------------------------
-(defun epitrocoide (gran petita a te)
-    (list 
-        (+ (* (- gran petita) (cos (/ (* petita a ) gran))) (* te (cos (* (+ 1 (/ petita gran)) a )))) ; x
-        (- (* (- gran petita) (sin (/ (* petita a ) gran))) (* te (sin (* (+ 1 (/ petita gran)) a )))) ; y   
-    )
-)
-
-; -------------------------------------------------------------------------------
-; Funcion para rotar un punto (x,y) según el angulo a
-; -------------------------------------------------------------------------------
-(defun rotar (x y a)
-    (list 
-        (+ (* x (cos a)) (* y (sin a)))
-        (- (* x (sin a)) (* y (cos a)))
-    )
-)
