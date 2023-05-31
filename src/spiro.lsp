@@ -26,15 +26,15 @@
                       '(30 8 20) 
                       '(24 5 16)) 
         'petits)
-    (putprop 'spiro 105 'rgran) ; Radio grande
-    (putprop 'spiro 72 'rpetit) ; Radio pequeño
+    (putprop 'spiro 150 'rgran) ; Radio grande
+    (putprop 'spiro 50 'rpetit) ; Radio pequeño
     (putprop 'spiro 3 'punt) ; Numero del punto a partir del cual se dibuja
     (putprop 'spiro 0 'inici) ; Angulo en grados del circulo gran inicial
-    (putprop 'spiro 1.5 'escala) ; Valor que escalará el dibujo
+    (putprop 'spiro 1.8 'escala) ; Valor que escalará el dibujo
     (putprop 'spiro t 'interior) ; Booleano que indica si se dibuja el interior
     (putprop 'spiro 0 'x) ; Coordenada x
     (putprop 'spiro 0 'y) ; Coordenada y
-    (putprop 'spiro 0.5 'pas) ; Variación del ángulo
+    (putprop 'spiro 0.2 'pas) ; Variación del ángulo
 )
 (guarda-informacio)
 
