@@ -232,13 +232,42 @@
     )
 )
 
+
+; -------------------------------------------------------------------------------
+; Función para obtener el valor de te, dado el valor de p,'sprio 'petits y la
+; posción en la lista de 'petits
+; -------------------------------------------------------------------------------
+(defun getTe (n l i)
+    (setq l2 (inTe n l))
+    (inTe2 i (car (cdr l2)))
+)
+
+(defun inTe (n l)
+    (cond ((null l) nil)
+            ((= n 1) (car l))
+            (t (inTe (- n 1) (cdr l)))
+    )
+)
+
+(defun inTe2 (i l)
+    (cond ((null l) nil)
+            ((= i 1) 
+                (car l)
+            )
+            (t
+                (inTe2 (- i 1) (cdr l))
+            )
+    ) 
+)
+
 ; -------------------------------------------------------------------------------
 ; Función que genera un spirographo con el número de vueltas necesarias para acabar todo el trazado.
 ; -------------------------------------------------------------------------------
 (defun spiro (gran petit p inc inici)
     (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
     (setq vueltas (/ distancia (* petit 2)))
-    (setq p (cond ((> (- gran petit) petit) 
+    (setq p (cond ((> (- gran petit) petit)
+                    ; (getTe p (get 'spiro 'petits) 2)
                    (cond ((= p 1) 35)
                          ((= p 2) 33)
                          ((= p 3) 31)
@@ -255,6 +284,7 @@
                          ((= p 14) 8)
                          ((= p 15) 5)
                          (t (error "El valor de p debe estar entre 1 y 15"))))
+                ; (getTe p (get 'spiro 'petits) 3)
                 ((= p 1) 56)
                 ((= p 2) 53)
                 ((= p 3) 50)
@@ -284,6 +314,7 @@
     (setq inici (get 'spiro 'inici))
     (setq escala (get 'spiro 'escala))
     (setq punt (get 'spiro 'punt))
+    ; (setq te (getTe punt (get 'spiro 'petits) punt) 2)
     (setq te (cond ((= punt 1) 35)
               ((= punt 2) 33)
               ((= punt 3) 31)
@@ -309,6 +340,7 @@
 (defun roda-voltes (n)
     (setq punt (get 'spiro 'punt))
     (setq escala (get 'spiro 'escala))
+    ; (setq te (getTe punt (get 'spiro 'petits) punt) 2)
     (setq te (cond ((= punt 1) 35)
               ((= punt 2) 33)
               ((= punt 3) 31)
@@ -331,6 +363,7 @@
 ; Función que hace lo mismo que roda-voltes pero se le pasan los parámetro los argumentos
 ; -------------------------------------------------------------------------------
 (defun spiro-voltes (voltes gran petit p in inici)
+    ; (setq te (getTe punt (get 'spiro 'petits) punt) 2)
     (setq te (cond ((= punt 1) 35)
               ((= punt 2) 33)
               ((= punt 3) 31)
