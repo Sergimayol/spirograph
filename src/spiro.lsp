@@ -390,5 +390,76 @@
 
 
 (defun dibuix()
+    (setq dibujos '(
+            (dibujo1 dibujo2 dibujo3 dibujo4)
+            (dibujo5 dibujo6 dibujo7 dibujo8)
+            (dibujo9 dibujo10 dibujo11 dibujo12)
+        )
+    )
+    (drawColumn dibujos 3) ; 3 es el número de columnas
 )
     
+(defun drawColumn(l n)
+    (cond ((= n 0) nil)
+          (t 
+            (drawRow (car l) n 2) ; 2 es el número de filas
+            (drawColumn (cdr l) (- n 1))
+          )
+    )
+)
+
+(defun drawRow(l i j)
+    (cond ((= j 0) nil)
+          (t 
+            (setq x (+ 80 (* 160 i)))
+            (setq y (+ 62.5 (* 125 j)))
+            (funcall (car l) x y)
+            (drawRow l (- j 1))
+          )
+    )
+)
+
+(defun dibujo1 (x y)
+    ; TODO
+)
+(defun dibujo2 (x y)
+    ; TODO
+)
+(defun dibujo3 (x y)
+    ; TODO
+)
+(defun dibujo4 (x y)
+    ; TODO
+)
+
+(defun dibujo5 (x y)
+    ; TODO
+)
+
+(defun dibujo6 (x y)
+    ; TODO
+)
+
+(defun dibujo7 (x y)
+    ; TODO
+)
+
+(defun dibujo8 (x y)
+    ; TODO
+)
+
+(defun dibujo9 (x y)
+    ; TODO
+)
+
+(defun dibujo10 (x y)
+    ; TODO
+)
+
+(defun dibujo11 (x y)
+    ; TODO
+)
+
+(defun dibujo12 (x y)
+    ; TODO
+)
