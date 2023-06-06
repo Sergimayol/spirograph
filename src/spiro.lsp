@@ -321,7 +321,7 @@
                 ((= p 14) 20)
                 ((= p 15) 16)
                 (t (error "El valor de p debe estar entre 1 y 15"))))
-    (spirograph (* vueltas 360) gran petit p inc inici &optional x y)
+    (spirograph (* vueltas 360) gran petit p inc inici x y)
 )
 
 ; -------------------------------------------------------------------------------
@@ -430,7 +430,7 @@
 )
 
 (defun dibujo2 ()
-    (spirograph 150 105 100 25 0.5 0 230 300)
+    (spiro 105 100 15 0.5 0 230 300)
 )
 
 (defun dibujo3 ()
