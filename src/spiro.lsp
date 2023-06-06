@@ -201,6 +201,7 @@
     (setq g3 (car (cdr (car (cdr (car (cdr grans)))))))
     (setq g4 (car (car (cdr (car (cdr grans)))))) 
     (list g1 g2 g3 g4)
+
 )
 
 ; -------------------------------------------------------------------------------
@@ -208,11 +209,11 @@
 ; -------------------------------------------------------------------------------
 (defun spirograph (p gran petit te inc inici)
     ;Epitrocoide
-    (cond ((or (= gran g4) (= gran g1))
+    (cond ((or (= gran (cadddr (funcall 'get-grans))) (= gran (car (funcall 'get-grans))))
            (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
     ;Hipotrocoide
-          ((or (= gran g3) (= gran g2))
+          ((or (= gran (caddr (funcall 'get-grans))) (= gran (cadr (funcall 'get-grans))))
            (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
           (t (error "Gran debe tener el valor de 144, 150, 96 o 105")))
@@ -228,10 +229,10 @@
 (defun spirograph2 (p gran petit te inc inici)
     (cond ((< p 0) t)
           (t
-    (cond ((or (= gran g4) (= gran g1))
+    (cond ((or (= gran (cadddr (funcall 'get-grans))) (= gran (car (funcall 'get-grans))))
            (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
-          ((or (= gran g3) (= gran g2))
+          ((or (= gran (caddr (funcall 'get-grans))) (= gran (cadr (funcall 'get-grans))))
            (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
            )
