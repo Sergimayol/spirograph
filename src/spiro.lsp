@@ -409,25 +409,25 @@
             (dibujo9 dibujo10 dibujo11 dibujo12)
         )
     )
-    (drawColumn dibujos 3) ; 3 es el número de columnas
+    (drawRow dibujos 3) ; 3 es el número de filas
 )
     
-(defun drawColumn(l n)
+(defun drawRow (l n)
     (cond ((= n 0) nil)
           (t 
-            (drawRow (car l) n 2) ; 2 es el número de filas
-            (drawColumn (cdr l) (- n 1))
+            (drawColumn (car l) n 4) ; 4 es el número de columnas
+            (drawRow (cdr l) (- n 1))
           )
     )
 )
 
-(defun drawRow(l i j)
+(defun drawColumn (l i j)
     (cond ((= j 0) nil)
           (t 
             (setq x (+ 80 (* 160 i)))
             (setq y (+ 62.5 (* 125 j)))
             (funcall (car l) x y)
-            (drawRow l (- j 1))
+            (drawColumn (cdr l) i (- j 1))
           )
     )
 )
