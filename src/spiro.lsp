@@ -83,12 +83,12 @@
 
 ; -------------------------------------------------------------------------------
 ; -------------------------------------------------------------------------------
-(defun pinta (x y &optional x1 y1)
-  (draw (realpart (round (+ (cond (x1 x1)
-                                 (t 320))
+(defun pinta (x y)
+  (draw (realpart (round (+ (cond ((/= (get 'spiro 'x) 0) (get 'spiro 'x))
+                                  (t 320))
                             (* 1.8 x))))
-        (realpart (round (+ (cond (y1 y1)
-                                 (t 187))
+        (realpart (round (+ (cond ((/= (get 'spiro 'y) 0) (get 'spiro 'y))
+                                  (t 187))
                             (* 1.8 y))))))
 
 
@@ -104,12 +104,12 @@
     )
 )
 
-(defun mou (x y &optional x1 y1)
-  (move (realpart (round (+ (cond (x1 x1)
-                                 (t 320))
+(defun mou (x y)
+  (move (realpart (round (+ (cond ((/= (get 'spiro 'x) 0) (get 'spiro 'x))
+                                  (t 320))
                             (* 1.8 x))))
-        (realpart (round (+ (cond (y1 y1)
-                                 (t 187))
+        (realpart (round (+ (cond ((/= (get 'spiro 'y) 0) (get 'spiro 'y))
+                                  (t 187))
                             (* 1.8 y))))))
 
 ; -------------------------------------------------------------------------------
@@ -214,7 +214,7 @@
 ; -------------------------------------------------------------------------------
 ; Función que genera un spirographo de manera recursiva.
 ; -------------------------------------------------------------------------------
-(defun spirograph (p gran petit te inc inici &optional x1 y1)
+(defun spirograph (p gran petit te inc inici)
     ;Epitrocoide
     (cond ((or (= gran (cadddr (funcall 'get-grans))) (= gran (car (funcall 'get-grans))))
            (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
@@ -228,12 +228,12 @@
     (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
     (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
     ; Movemos x e y
-    (mou x y x1 y1)
-    (spirograph2 p gran petit te inc inici x1 y1)
+    (mou x y)
+    (spirograph2 p gran petit te inc inici)
 )
 
 
-(defun spirograph2 (p gran petit te inc inici x1 y1)
+(defun spirograph2 (p gran petit te inc inici)
     (cond ((< p 0) t)
           (t
     (cond ((or (= gran (cadddr (funcall 'get-grans))) (= gran (car (funcall 'get-grans))))
@@ -246,8 +246,8 @@
         (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
         (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
             ; Pintar x e y            
-            (pinta x y x1 y1)
-            (spirograph2 (- p inc) gran petit te inc inici x1 y1)
+            (pinta x y)
+            (spirograph2 (- p inc) gran petit te inc inici)
           )
     )
 )
@@ -283,7 +283,7 @@
 ; -------------------------------------------------------------------------------
 ; Función que genera un spirographo con el número de vueltas necesarias para acabar todo el trazado.
 ; -------------------------------------------------------------------------------
-(defun spiro (gran petit p inc inici &optional x y)
+(defun spiro (gran petit p inc inici)
     (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
     (setq vueltas (/ distancia (* petit 2)))
     (setq p (cond ((> (- gran petit) petit)
@@ -321,7 +321,7 @@
                 ((= p 14) 20)
                 ((= p 15) 16)
                 (t (error "El valor de p debe estar entre 1 y 15"))))
-    (spirograph (* vueltas 360) gran petit p inc inici x y)
+    (spirograph (* vueltas 360) gran petit p inc inici)
 )
 
 ; -------------------------------------------------------------------------------
@@ -426,48 +426,60 @@
     
 
 (defun dibujo1 ()
-    (spirograph 150 105 100 25 0.5 0 80 300)
+    (posicio 80 300)
+    (spirograph 150 105 100 25 0.5 0)
 )
 
 (defun dibujo2 ()
-    (spiro 105 100 15 0.5 0 230 300)
+    (posicio 230 300)
+    (spiro 105 100 15 0.5 0)
 )
 
 (defun dibujo3 ()
-    (spirograph 150 105 100 25 0.5 0 380 300)
+    (posicio 380 300)
+    (spirograph 150 105 100 25 0.5 0)
 )
 
 (defun dibujo4 ()
-    (spirograph 150 105 100 25 0.5 0 530 300)
+    (posicio 530 300)
+    (spirograph 150 105 100 25 0.5 0)
 )
 
 (defun dibujo5 ()
-    (spirograph 150 105 100 25 0.5 0 80 180)
+    (posicio 80 180)
+    (spirograph 150 105 100 25 0.5 0)
 )
 (defun dibujo6 ()
-    (spirograph 150 105 100 25 0.5 0 230 180)
+    (posicio 230 180)
+    (spirograph 150 105 100 25 0.5 0)
 )
 
 (defun dibujo7 ()
-    (spirograph 150 105 100 25 0.5 0 380 180)
+    (posicio 380 180)
+    (spirograph 150 105 100 25 0.5 0)
 )
 
 (defun dibujo8 ()
-    (spirograph 150 105 100 25 0.5 0 530 180)
+    (posicio 530 180)
+    (spirograph 150 105 100 25 0.5 0)
 )
 
 (defun dibujo9 ()
-    (spirograph 150 105 100 25 0.5 0 80 60)
+    (posicio 80 60)
+    (spirograph 150 105 100 25 0.5 0)
 )
 
 (defun dibujo10 ()
-    (spirograph 150 105 100 25 0.5 0 230 60)
+    (posicio 230 60)
+    (spirograph 150 105 100 25 0.5 0)
 )
 
 (defun dibujo11 ()
-    (spirograph 150 105 100 25 0.5 0 380 60)
+    (posicio 380 60)
+    (spirograph 150 105 100 25 0.5 0)
 )
 
 (defun dibujo12 ()
-    (spirograph 150 105 100 25 0.5 0 530 60)
+    (posicio 530 60)
+    (spirograph 150 105 100 25 0.5 0)
 )
