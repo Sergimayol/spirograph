@@ -446,7 +446,12 @@
 
 (defun dibujo4 ()
     (posicio 530 300)
-    (spirograph 150 105 100 25 0.5 0)
+    (verd)
+    (spiro 96 70 7 0.5 0)
+    (vermell)
+    (spiro 96 70 8 0.5 0)
+    (blau)
+    (spiro 96 70 9 0.5 0)
 )
 
 (defun dibujo5 ()
