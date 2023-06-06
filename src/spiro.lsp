@@ -432,12 +432,16 @@
 
 (defun dibujo2 ()
     (posicio 230 300)
-    (spiro 105 100 15 0.5 0)
+    (blau)
+    (spiro 96 60 14 0.3 0)
 )
 
 (defun dibujo3 ()
     (posicio 380 300)
-    (spirograph 150 105 100 25 0.5 0)
+    (vermell)
+    (spiros '((105 63 1 0.5 0)
+ (105 63 3 0.5 0)
+ (105 63 5 0.5 0)))
 )
 
 (defun dibujo4 ()
