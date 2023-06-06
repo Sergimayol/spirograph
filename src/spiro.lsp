@@ -83,10 +83,14 @@
 
 ; -------------------------------------------------------------------------------
 ; -------------------------------------------------------------------------------
-(defun pinta (x y)
-    (draw (realpart (round (+ 320 (* 1.8 x))))
-    (realpart (round (+ 187 (* 1.8 y)))))
-)
+(defun pinta (x y &optional x1 y1)
+  (draw (realpart (round (+ (cond (x1 x1)
+                                 (t 320))
+                            (* 1.8 x))))
+        (realpart (round (+ (cond (y1 y1)
+                                 (t 187))
+                            (* 1.8 y))))))
+
 
 ; -------------------------------------------------------------------------------
 ; -------------------------------------------------------------------------------
@@ -100,10 +104,13 @@
     )
 )
 
-(defun mou (x y)
-    (move (realpart (round (+ 320 (* 1.8 x))))
-    (realpart (round (+ 187 (* 1.8 y)))))
-)
+(defun mou (x y &optional x1 y1)
+  (move (realpart (round (+ (cond (x1 x1)
+                                 (t 320))
+                            (* 1.8 x))))
+        (realpart (round (+ (cond (y1 y1)
+                                 (t 187))
+                            (* 1.8 y))))))
 
 ; -------------------------------------------------------------------------------
 ; Función para dibujar un circulo de n segmentos de radio r y en el punto (x,y).
@@ -207,7 +214,7 @@
 ; -------------------------------------------------------------------------------
 ; Función que genera un spirographo de manera recursiva.
 ; -------------------------------------------------------------------------------
-(defun spirograph (p gran petit te inc inici)
+(defun spirograph (p gran petit te inc inici &optional x1 y1)
     ;Epitrocoide
     (cond ((or (= gran (cadddr (funcall 'get-grans))) (= gran (car (funcall 'get-grans))))
            (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
@@ -221,12 +228,12 @@
     (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
     (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
     ; Movemos x e y
-    (mou x y) 
-    (spirograph2 p gran petit te inc inici)
+    (mou x y x1 y1)
+    (spirograph2 p gran petit te inc inici x1 y1)
 )
 
 
-(defun spirograph2 (p gran petit te inc inici)
+(defun spirograph2 (p gran petit te inc inici x1 y1)
     (cond ((< p 0) t)
           (t
     (cond ((or (= gran (cadddr (funcall 'get-grans))) (= gran (car (funcall 'get-grans))))
@@ -239,8 +246,8 @@
         (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
         (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
             ; Pintar x e y            
-            (pinta x y)
-            (spirograph2 (- p inc) gran petit te inc inici)
+            (pinta x y x1 y1)
+            (spirograph2 (- p inc) gran petit te inc inici x1 y1)
           )
     )
 )
@@ -276,7 +283,7 @@
 ; -------------------------------------------------------------------------------
 ; Función que genera un spirographo con el número de vueltas necesarias para acabar todo el trazado.
 ; -------------------------------------------------------------------------------
-(defun spiro (gran petit p inc inici)
+(defun spiro (gran petit p inc inici &optional x y)
     (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
     (setq vueltas (/ distancia (* petit 2)))
     (setq p (cond ((> (- gran petit) petit)
@@ -314,7 +321,7 @@
                 ((= p 14) 20)
                 ((= p 15) 16)
                 (t (error "El valor de p debe estar entre 1 y 15"))))
-    (spirograph (* vueltas 360) gran petit p inc inici)
+    (spirograph (* vueltas 360) gran petit p inc inici &optional x y)
 )
 
 ; -------------------------------------------------------------------------------
@@ -403,76 +410,64 @@
 
 
 (defun dibuix()
-    (setq dibujos '(
-            (dibujo1 dibujo2 dibujo3 dibujo4)
-            (dibujo5 dibujo6 dibujo7 dibujo8)
-            (dibujo9 dibujo10 dibujo11 dibujo12)
-        )
-    )
-    (drawRow dibujos 3) ; 3 es el número de filas
+    (dibujo1)
+    (dibujo2)
+    (dibujo3)
+    (dibujo4)
+    (dibujo5)
+    (dibujo6)
+    (dibujo7)
+    (dibujo8)
+    (dibujo9)
+    (dibujo10)
+    (dibujo11)
+    (dibujo12)
 )
     
-(defun drawRow (l n)
-    (cond ((= n 0) nil)
-          (t 
-            (drawColumn (car l) n 4) ; 4 es el número de columnas
-            (drawRow (cdr l) (- n 1))
-          )
-    )
+
+(defun dibujo1 ()
+    (spirograph 150 105 100 25 0.5 0 80 300)
 )
 
-(defun drawColumn (l i j)
-    (cond ((= j 0) nil)
-          (t 
-            (setq x (+ 80 (* 160 i)))
-            (setq y (+ 62.5 (* 125 j)))
-            (funcall (car l) x y)
-            (drawColumn (cdr l) i (- j 1))
-          )
-    )
+(defun dibujo2 ()
+    (spirograph 150 105 100 25 0.5 0 230 300)
 )
 
-(defun dibujo1 (x y)
-    ; TODO
-)
-(defun dibujo2 (x y)
-    ; TODO
-)
-(defun dibujo3 (x y)
-    ; TODO
-)
-(defun dibujo4 (x y)
-    ; TODO
+(defun dibujo3 ()
+    (spirograph 150 105 100 25 0.5 0 380 300)
 )
 
-(defun dibujo5 (x y)
-    ; TODO
+(defun dibujo4 ()
+    (spirograph 150 105 100 25 0.5 0 530 300)
 )
 
-(defun dibujo6 (x y)
-    ; TODO
+(defun dibujo5 ()
+    (spirograph 150 105 100 25 0.5 0 80 180)
+)
+(defun dibujo6 ()
+    (spirograph 150 105 100 25 0.5 0 230 180)
 )
 
-(defun dibujo7 (x y)
-    ; TODO
+(defun dibujo7 ()
+    (spirograph 150 105 100 25 0.5 0 380 180)
 )
 
-(defun dibujo8 (x y)
-    ; TODO
+(defun dibujo8 ()
+    (spirograph 150 105 100 25 0.5 0 530 180)
 )
 
-(defun dibujo9 (x y)
-    ; TODO
+(defun dibujo9 ()
+    (spirograph 150 105 100 25 0.5 0 80 60)
 )
 
-(defun dibujo10 (x y)
-    ; TODO
+(defun dibujo10 ()
+    (spirograph 150 105 100 25 0.5 0 230 60)
 )
 
-(defun dibujo11 (x y)
-    ; TODO
+(defun dibujo11 ()
+    (spirograph 150 105 100 25 0.5 0 380 60)
 )
 
-(defun dibujo12 (x y)
-    ; TODO
+(defun dibujo12 ()
+    (spirograph 150 105 100 25 0.5 0 530 60)
 )
