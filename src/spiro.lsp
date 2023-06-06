@@ -192,20 +192,22 @@
 )
 
 ; -------------------------------------------------------------------------------
-; Función que genera un spirographo de manera recursiva.
+; Función que devuelve una lista con los valores de 'grans
 ; -------------------------------------------------------------------------------
-(defun spirograph (p gran petit te inc inici)
-    ;Epitrocoide
+(defun get-grans ()
     (setq grans (get 'spiro 'grans))
     (setq g1 (car (car (cdr (car grans)))))
     (setq g2 (car (cdr (car (cdr (car grans))))))
     (setq g3 (car (cdr (car (cdr (car (cdr grans)))))))
-    (setq g4 (car (car (cdr (car (cdr grans))))))
-    (print g1)
-    (print g2)
-    (print g3)
-    (print g4)
-    
+    (setq g4 (car (car (cdr (car (cdr grans)))))) 
+    (list g1 g2 g3 g4)
+)
+
+; -------------------------------------------------------------------------------
+; Función que genera un spirographo de manera recursiva.
+; -------------------------------------------------------------------------------
+(defun spirograph (p gran petit te inc inici)
+    ;Epitrocoide
     (cond ((or (= gran g4) (= gran g1))
            (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
@@ -226,10 +228,10 @@
 (defun spirograph2 (p gran petit te inc inici)
     (cond ((< p 0) t)
           (t
-    (cond ((or (= gran 144) (= gran 150))
+    (cond ((or (= gran g4) (= gran g1))
            (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
-          ((or (= gran 96) (= gran 105))
+          ((or (= gran g3) (= gran g2))
            (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
            (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
            )
