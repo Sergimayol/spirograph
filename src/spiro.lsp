@@ -1,7 +1,3 @@
-; Integrantes del grupo:
-;   Autor 1: ;
-;   Autor 2: ;
-
 ;Variable spiro global
 (defvar spiro)
 
@@ -9,49 +5,33 @@
 ; Función para inicializar los valores por defecto de un spiro.
 ; -------------------------------------------------------------------------------
 (defun guarda-informacio ()
-    (putprop 'spiro '('(150 105) '(144 96)) 'grans)
-    (putprop 'spiro '('(84 35 56)
-                      '(80 33 53) 
-                      '(75 31 50) 
-                      '(72 29 48) 
-                      '(63 25 42) 
-                      '(60 23 40) 
-                      '(56 21 37) 
-                      '(52 19 35) 
-                      '(48 17 32) 
-                      '(45 16 30) 
-                      '(42 14 28) 
-                      '(40 13 27) 
-                      '(32 9 21) 
-                      '(30 8 20) 
-                      '(24 5 16)) 
-        'petits)
-    (putprop 'spiro 150 'rgran) ; Radio grande
-    (putprop 'spiro 50 'rpetit) ; Radio pequeño
-    (putprop 'spiro 3 'punt) ; Numero del punto a partir del cual se dibuja
-    (putprop 'spiro 0 'inici) ; Angulo en grados del circulo gran inicial
+    (putprop 'spiro '((150 105) (144 96)) 'grans)
+    (putprop 'spiro '((84 35 56)
+                      (80 33 53) 
+                      (75 31 50) 
+                      (72 29 48) 
+                      (63 25 42) 
+                      (60 23 40) 
+                      (56 21 37) 
+                      (52 19 35) 
+                      (48 17 32) 
+                      (45 16 30) 
+                      (42 14 28) 
+                      (40 13 27) 
+                      (32 9 21) 
+                      (30 8 20) 
+                      (24 5 16)) 'petits)
+    (putprop 'spiro 150 'rgran)  ; Radio grande
+    (putprop 'spiro 32 'rpetit)  ; Radio pequeño
+    (putprop 'spiro 3 'punt)     ; Numero del punto a partir del cual se dibuja
+    (putprop 'spiro 0 'inici)    ; Angulo en grados del circulo gran inicial
     (putprop 'spiro 1.8 'escala) ; Valor que escalará el dibujo
     (putprop 'spiro t 'interior) ; Booleano que indica si se dibuja el interior
-    (putprop 'spiro 0 'x) ; Coordenada x
-    (putprop 'spiro 0 'y) ; Coordenada y
-    (putprop 'spiro 0.2 'pas) ; Variación del ángulo
+    (putprop 'spiro 320 'x)      ; Coordenada x (Inicialmente centro de la pantalla)
+    (putprop 'spiro 187 'y)      ; Coordenada y (Inicialmente centro de la pantalla)
+    (putprop 'spiro 0.2 'pas)    ; Variación del ángulo
 )
 (guarda-informacio)
-
-(defun contains (e l)
-    (cond ((null l) nil)
-          ((atom (car l))
-              (cond ((equal e (car l)) t)
-                  (t (contains e (cdr l)))
-             )
-          )
-          (t (contains e (car l)))
-    )
-)
-
-(defun radians (graus)
-    (/ (* graus (* 2 pi)) 360)
-)
 
 ; -------------------------------------------------------------------------------
 ; Función para cambiar el color del dibujo a rojo y el fondo a blanco.
@@ -82,40 +62,39 @@
 )
 
 ; -------------------------------------------------------------------------------
-; -------------------------------------------------------------------------------
+(defun mou (x y)
+    (move 
+        (realpart (round (+ (get 'spiro 'x) (* (get 'spiro 'escala) x))))
+        (realpart (round (+ (get 'spiro 'y) (* (get 'spiro 'escala) y))))
+    )
+)
+
 (defun pinta (x y)
-  (draw (realpart (round (+ (cond ((/= (get 'spiro 'x) 0) (get 'spiro 'x))
-                                  (t 320))
-                            (* 1.8 x))))
-        (realpart (round (+ (cond ((/= (get 'spiro 'y) 0) (get 'spiro 'y))
-                                  (t 187))
-                            (* 1.8 y))))))
+    (draw
+        (realpart (round (+ (get 'spiro 'x) (* (get 'spiro 'escala) x))))
+        (realpart (round (+ (get 'spiro 'y) (* (get 'spiro 'escala) y))))
+    )
+)
 
-
-; -------------------------------------------------------------------------------
-; -------------------------------------------------------------------------------
-(defun cercle2 (x y radi pas angle)
+(defun cercle-aux (x y radi pas angle)
     (cond ((< angle 360)
             (pinta (+ x (* radi (cos (radians (+ angle pas)))))
                    (+ y (* radi (sin (radians (+ angle pas)))))
             )
-            (cercle2 x y radi pas (+ angle pas)))
+            (cercle-aux x y radi pas (+ angle pas)))
       (t t)
     )
 )
 
-(defun mou (x y)
-  (move (realpart (round (+ (cond ((/= (get 'spiro 'x) 0) (get 'spiro 'x))
-                                  (t 320))
-                            (* 1.8 x))))
-        (realpart (round (+ (cond ((/= (get 'spiro 'y) 0) (get 'spiro 'y))
-                                  (t 187))
-                            (* 1.8 y))))))
+(defun radians (graus)
+    (/ (* graus (* 2 pi)) 360)
+)
+; -------------------------------------------------------------------------------
 
 ; -------------------------------------------------------------------------------
 ; Función para dibujar un circulo de n segmentos de radio r y en el punto (x,y).
 ;
-; - Parámetros: 
+; - Parámetros:
 ;   @x - Coordenada x
 ;   @y - Coordenada y
 ;   @r - Radio del circulo
@@ -123,7 +102,7 @@
 ; -------------------------------------------------------------------------------
 (defun cercle (x y r n)
     (mou (+ x r) y)
-    (cercle2 x y r(/ 360 n) 0)
+    (cercle-aux x y r(/ 360 n) 0)
 )
 
 ; -------------------------------------------------------------------------------
@@ -199,214 +178,214 @@
 )
 
 ; -------------------------------------------------------------------------------
-; Función que devuelve una lista con los valores de 'grans
-; -------------------------------------------------------------------------------
-(defun get-grans ()
-    (setq grans (get 'spiro 'grans))
-    (setq g1 (car (car (cdr (car grans)))))
-    (setq g2 (car (cdr (car (cdr (car grans))))))
-    (setq g3 (car (cdr (car (cdr (car (cdr grans)))))))
-    (setq g4 (car (car (cdr (car (cdr grans)))))) 
-    (list g1 g2 g3 g4)
-
-)
-
-; -------------------------------------------------------------------------------
 ; Función que genera un spirographo de manera recursiva.
 ; -------------------------------------------------------------------------------
 (defun spirograph (p gran petit te inc inici)
-    ;Epitrocoide
-    (cond ((or (= gran (cadddr (funcall 'get-grans))) (= gran (car (funcall 'get-grans))))
-           (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
-           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
-    ;Hipotrocoide
-          ((or (= gran (caddr (funcall 'get-grans))) (= gran (cadr (funcall 'get-grans))))
-           (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
-           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
-          (t (error "Gran debe tener el valor de 144, 150, 96 o 105")))
-    ;Rotar los puntos con el ángulo inicial
-    (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
-    (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
-    ; Movemos x e y
-    (mou x y)
-    (spirograph2 p gran petit te inc inici)
-)
-
-
-(defun spirograph2 (p gran petit te inc inici)
-    (cond ((< p 0) t)
+    (cond ((get 'spiro 'interior)
+                (setq x (calc-x-hipotrocoide p te gran petit))
+                (setq y (calc-y-hipotrocoide p te gran petit))
+                (mou (calc-desp-x x y inici) (calc-desp-y x y inici))
+                (spirograph-interior p gran petit te inc inici)
+          )
           (t
-    (cond ((or (= gran (cadddr (funcall 'get-grans))) (= gran (car (funcall 'get-grans))))
-           (setq x (- (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (+ 1 (/ petit gran)) p)))))
-           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (+ 1 (/ petit gran)) p))))))
-          ((or (= gran (caddr (funcall 'get-grans))) (= gran (cadr (funcall 'get-grans))))
-           (setq x (+ (* (- gran petit) (cos (/ (* petit p) gran))) (* te (cos (* (- 1 (/ petit gran)) p )))))
-           (setq y (- (* (- gran petit) (sin (/ (* petit p) gran))) (* te (sin (* (- 1 (/ petit gran)) p ))))))
-           )
-        (setq x (+ (* x (cos (radians inici))) (* y (sin (radians inici)))))
-        (setq y (- (* x (sin (radians inici))) (* y (cos (radians inici)))))
-            ; Pintar x e y            
-            (pinta x y)
-            (spirograph2 (- p inc) gran petit te inc inici)
+                (setq x (calc-x-epitrocoide p te gran petit))
+                (setq y (calc-y-epitrocoide p te gran petit))
+                (mou (calc-desp-x x y inici) (calc-desp-y x y inici))
+                (spirograph-exterior p gran petit te inc inici)
           )
     )
 )
 
-
-; -------------------------------------------------------------------------------
-; Función para obtener el valor de te, dado el valor de p,'sprio 'petits y la
-; posción en la lista de 'petits
-; -------------------------------------------------------------------------------
-(defun getTe (n l i)
-    (setq l2 (inTe n l))
-    (inTe2 i (car (cdr l2)))
-)
-
-(defun inTe (n l)
-    (cond ((null l) nil)
-            ((= n 1) (car l))
-            (t (inTe (- n 1) (cdr l)))
+(defun calc-x-hipotrocoide (angle dist rgran rpetit)
+    (+ 
+        (* (- rgran rpetit) (cos (/ (* angle rpetit) rgran)))
+        (* dist (cos (* angle (- 1 (/ rpetit rgran)))))
     )
 )
 
-(defun inTe2 (i l)
-    (cond ((null l) nil)
-            ((= i 1) 
-                (car l)
-            )
+(defun calc-y-hipotrocoide (angle dist rgran rpetit)
+    (-
+        (* (- rgran rpetit) (sin (/ (* angle rpetit) rgran)))
+        (* dist (sin (* angle (- 1 (/ rpetit rgran)))))
+    )
+)
+
+(defun calc-x-epitrocoide (angle dist rgran rpetit)
+    (-
+        (* (+ rgran rpetit) (cos (/ (* angle rpetit) rgran)))
+        (* dist (cos (* angle (+ 1 (/ rpetit rgran)))))
+    )
+)
+
+(defun calc-y-epitrocoide (angle dist rgran rpetit)
+    (-
+        (* (+ rgran rpetit) (sin (/ (* angle rpetit) rgran)))
+        (* dist (sin (* angle (+ 1 (/ rpetit rgran)))))
+    )
+)
+
+(defun calc-desp-x(x y angle)
+    (+ (* x (cos (radians (+ angle -90)))) (* y (sin (radians (+ angle -90)))))
+)
+
+(defun calc-desp-y(x y angle)
+    (+ (* (- x) (sin (radians (+ angle -90)))) (* y (cos (radians (+ angle -90)))))
+)
+
+(defun spirograph-interior (p rgran rpetit dist inc inici)
+    (cond ((< p 0) t)
             (t
-                (inTe2 (- i 1) (cdr l))
+                (set 'x (calc-x-hipotrocoide p dist rgran rpetit))
+                (set 'y (calc-y-hipotrocoide p dist rgran rpetit))
+                (pinta (calc-desp-x x y inici) (calc-desp-y x y inici))
+                (spirograph-interior (- p inc) rgran rpetit dist inc inici)
             )
-    ) 
+    )
+)
+
+(defun spirograph-exterior (p rgran rpetit dist inc inici)
+    (cond ((< p 0) t)
+            (t
+                (set 'x (calc-x-epitrocoide p dist rgran rpetit))
+                (set 'y (calc-y-epitrocoide p dist rgran rpetit))
+                (pinta (calc-desp-x x y inici) (calc-desp-y x y inici))
+                (spirograph-exterior (- p inc) rgran rpetit dist inc inici)
+            )
+    )
 )
 
 ; -------------------------------------------------------------------------------
-; Función que genera un spirographo con el número de vueltas necesarias para acabar todo el trazado.
+; Función que genera un spirograph con el número de vueltas necesarias para 
+; acabar todo el trazado.
 ; -------------------------------------------------------------------------------
 (defun spiro (gran petit p inc inici)
-    (setq distancia (sqrt (+ (* gran gran) (* petit petit) (* -2 gran petit (cos (/ (* p pi) 180))))))
-    (setq vueltas (/ distancia (* petit 2)))
-    (setq p (cond ((> (- gran petit) petit)
-                    ; (getTe p (get 'spiro 'petits) 2)
-                   (cond ((= p 1) 35)
-                         ((= p 2) 33)
-                         ((= p 3) 31)
-                         ((= p 4) 29)
-                         ((= p 5) 25)
-                         ((= p 6) 23)
-                         ((= p 7) 21)
-                         ((= p 8) 19)
-                         ((= p 9) 17)
-                         ((= p 10) 16)      
-                         ((= p 11) 14)
-                         ((= p 12) 13)
-                         ((= p 13) 9)
-                         ((= p 14) 8)
-                         ((= p 15) 5)
-                         (t (error "El valor de p debe estar entre 1 y 15"))))
-                ; (getTe p (get 'spiro 'petits) 3)
-                ((= p 1) 56)
-                ((= p 2) 53)
-                ((= p 3) 50)
-                ((= p 4) 48)
-                ((= p 5) 42)
-                ((= p 6) 40)
-                ((= p 7) 37)
-                ((= p 8) 35)
-                ((= p 9) 32)
-                ((= p 10) 30)      
-                ((= p 11) 28)
-                ((= p 12) 27)
-                ((= p 13) 21)
-                ((= p 14) 20)
-                ((= p 15) 16)
-                (t (error "El valor de p debe estar entre 1 y 15"))))
-    (spirograph (* vueltas 360) gran petit p inc inici)
+    (setq new-p (/ (* 2 pi (cadr (reduir gran petit))) inc))
+    (setq new-petit (get-petit petit (get 'spiro 'petits))) 
+    (setq forats (cadr new-petit))
+    (setq new-t (* (+ 1 (- forats p)) (/ (car new-petit) (+ 1 forats))))
+    (spirograph new-p gran petit new-t inc inici)
 )
 
-
-; -------------------------------------------------------------------------------
-; Función que obtiene el valor por el punto de la lista 'petits
-; -------------------------------------------------------------------------------
-(defun get-petits (punt)
-  (cond ((= punt 1) 35)
-        ((= punt 2) 33)
-        ((= punt 3) 31)
-        ((= punt 4) 29)
-        ((= punt 5) 25)
-        ((= punt 6) 23)
-        ((= punt 7) 21)
-        ((= punt 8) 19)
-        ((= punt 9) 17)
-        ((= punt 10) 16)
-        ((= punt 11) 14)
-        ((= punt 12) 13)
-        ((= punt 13) 9)
-        ((= punt 14) 8)
-        ((= punt 15) 5))
+(defun get-petit (rpetit list)
+    (cond ((null list) nil)
+            ((equal rpetit (caar list)) 
+                (car list)
+            )
+            (t 
+                (get-petit rpetit (cdr list))
+            )
+    )
 )
 
 ; -------------------------------------------------------------------------------
-; Llama a la función sphirograph y le pasa los valores de la variable spiro
+; Llama a la función spiro y le pasa los valores de la variable spiro
 ; -------------------------------------------------------------------------------
 (defun roda ()
-    (setq gran (get 'spiro 'rgran))
-    (setq petit (get 'spiro 'rpetit))
-    (setq p (get 'spiro 'pas))
-    (setq inici (get 'spiro 'inici))
-    (setq escala (get 'spiro 'escala))
-    (setq punt (get 'spiro 'punt))
-    ; (setq te (getTe punt (get 'spiro 'petits) punt) 2)
-    (setq te (get-petits punt))
-    (print te)
-    (spirograph (* escala 360) gran petit (* te 2) p inici)
+    (spiro
+        (get 'spiro 'rgran)
+        (get 'spiro 'rpetit)
+        (get 'spiro 'punt)
+        (get 'spiro 'pas)
+        (get 'spiro 'inici)
+    )
 )
 
 ; -------------------------------------------------------------------------------
-; Función que hace lo mismo que roda pero con un número de vueltas determinado
+; Llama a la función spiro y le pasa los valores de la variable spiro
 ; -------------------------------------------------------------------------------
 (defun roda-voltes (n)
-    (setq punt (get 'spiro 'punt))
-    (setq escala (get 'spiro 'escala))
-    ; (setq te (getTe punt (get 'spiro 'petits) punt) 2)
-    (setq te (get-petits punt))
-    (spirograph (/ 360 (* n escala)) (get 'spiro 'rgran) (get 'spiro 'rpetit) (* te 2) (get 'spiro 'pas) (get 'spiro 'inici))
+    (setq new-petit (get-petit (get 'spiro 'rpetit) (get 'spiro 'petits))) 
+    (setq forats (cadr new-petit))
+    (spirograph 
+        (/ (* 2 pi (- n 1)) (get 'spiro 'pas))
+        (get 'spiro 'rgran)
+        (get 'spiro 'rpetit)
+        (* (+ 1 (- forats (get 'spiro 'punt))) (/ (car new-petit) (+ 1 forats)))
+        (get 'spiro 'pas)
+        (get 'spiro 'inici)
+    )
 )
 
 ; -------------------------------------------------------------------------------
-; Función que hace lo mismo que roda-voltes pero se le pasan los parámetro los argumentos
 ; -------------------------------------------------------------------------------
-(defun spiro-voltes (voltes gran petit p in inici)
-    ; (setq te (getTe punt (get 'spiro 'petits) punt) 2)
-    (setq te (get-petits punt))
-    (spirograph (/ 360 (* voltes escala)) gran petit (* te 2) in inici)
+(defun spiro-voltes (voltes gran petit p inc inici)
+    (setq new-petit (get-petit petit (get 'spiro 'petits)))
+    (setq forats (cadr new-petit))
+    (spirograph
+        (/ (* 2 pi (- voltes 1)) inc)
+        gran
+        petit
+        (* (+ 1 (- forats p)) (/ (car new-petit) (+ 1 forats)))
+        inc
+        inici
+    )
 )
 
-
+; -------------------------------------------------------------------------------
+; -------------------------------------------------------------------------------
 (defun spiros (l)
-  (dolist (params l)
-    (apply 'spiro params)) 
+    (cond ((null (cdr l)) (apply 'spiro (car l)))
+            (t
+                (apply 'spiro (car l))
+                (spiros (cdr l))
+            )
+    )
 )
 
-
+; -------------------------------------------------------------------------------
+; -------------------------------------------------------------------------------
 (defun dibuix()
-    ;(dibujo1)
-    ;(dibujo2)
-    ;(dibujo3)
+    (setq copy-escala (get 'spiro 'escala)) 
+    (setq copy-x (get 'spiro 'x))
+    (setq copy-y (get 'spiro 'y))
+
+    (setq margin-x 160)
+    (setq margin-y 125)
+    (setq initial-x 80)
+    (setq initial-y 62.5)
+
+    (escala 0.5)
+    (cls)
+
+    (posicio (calc-new-x initial-x margin-x 0) (calc-new-y initial-y margin-y 0))
+    (dibujo1)
+    (posicio (calc-new-x initial-x margin-x 1) (calc-new-y initial-y margin-y 0))
+    (dibujo2)
+    (posicio (calc-new-x initial-x margin-x 2) (calc-new-y initial-y margin-y 0))
+    (dibujo3)
+    (posicio (calc-new-x initial-x margin-x 3) (calc-new-y initial-y margin-y 0))
     (dibujo4)
+    (posicio (calc-new-x initial-x margin-x 0) (calc-new-y initial-y margin-y 1))
     (dibujo5)
+    (posicio (calc-new-x initial-x margin-x 1) (calc-new-y initial-y margin-y 1))
     (dibujo6)
+    (posicio (calc-new-x initial-x margin-x 2) (calc-new-y initial-y margin-y 1))
     (dibujo7)
+    (posicio (calc-new-x initial-x margin-x 3) (calc-new-y initial-y margin-y 1))
     (dibujo8)
+    (posicio (calc-new-x initial-x margin-x 0) (calc-new-y initial-y margin-y 2))
     (dibujo9)
+    (posicio (calc-new-x initial-x margin-x 1) (calc-new-y initial-y margin-y 2))
     (dibujo10)
+    (posicio (calc-new-x initial-x margin-x 2) (calc-new-y initial-y margin-y 2))
     (dibujo11)
+    (posicio (calc-new-x initial-x margin-x 3) (calc-new-y initial-y margin-y 2))
     (dibujo12)
+
+    (escala copy-escala)
+    (posicio copy-x copy-y)
+    (negre)
 )
-    
+
+(defun calc-new-x (x margin n)
+    (+ x (* margin n))
+)
+
+(defun calc-new-y (y margin n)
+    (+ y (* margin n))
+)
 
 (defun dibujo1 ()
-    (posicio 80 300)
     (vermell)
     (spiros '((105 63 1 0.5 0)
                 (105 63 3 0.5 0)
@@ -418,137 +397,116 @@
     (blau)
     (spiros '((105 63 13 0.5 0)
                 (105 63 15 0.5 0)
-                (105 63 15 0.5 0)))
+                (105 63 17 0.5 0)))
 )
 
 (defun dibujo2 ()
-    (posicio 230 300)
     (verd)
     (spiros '((94 60 11 0.5 18)
-                (94 48 15 0.5 201)
-                (94 24 8 0.5 260)))
+              (94 48 15 0.5 201)
+              (94 24 8 0.5 260)))
     (negre)
     (spiros '((105 75 9 0.5 162)
-                (94 42 2 0.5 263)
-                (105 24 7 0.5 15)))
-    (blau)
-    (spiros '((105 42 12 0.5 36)
-                (105 45 3 0.5 67)
-                (94 24 9 0.5 223)))
+              (94 42 2 0.5 263)
+              (105 24 7 0.5 15)))
 )
 
 (defun dibujo3 ()
-    (posicio 380 300)
     (vermell)
     (roda-voltes 15)
     (blau)
     (spiros '((105 42 7 0.5 0)
-                (94 24 9 0.5 0)
-                (105 63 11 0.5 0)))
+              (94 24 9 0.5 0)
+              (105 63 11 0.5 0)))
     (verd)
     (spiros '((105 63 1 0.5 0)
-                (105 63 3 0.5 0)
-                (105 63 5 0.5 0)))
+              (105 63 3 0.5 0)
+              (105 63 5 0.5 0)))
 )
 
 (defun dibujo4 ()
-    (posicio 530 300)
-    (verd)
-    (spiros '((96 80 13 0.5 0)
-                (96 80 14 0.5 0)
-                (96 80 15 0.5 0)))
     (blau)
-    (spiros '((96 80 13 0.5 0)
-                (96 80 12 0.5 0)
-                (96 80 11 0.5 0)))
+    (spiro-voltes 15 105 63 1 0.2 0)
     (vermell)
-    (spirograph 150 105 100 2 0.5 0)
+    (spiro-voltes 8 94 24 3 0.3 0)
+    (verd)
+    (spiro-voltes 9 105 63 9 0.4 0)
 )
 
 (defun dibujo5 ()
-    (posicio 80 180)
-    (blau)
-    (spirograph 100 144 122 8 0.5 0)
-
-)
-(defun dibujo6 ()
-    (posicio 230 180)
     (negre)
-    (spirograph 150 105 100 25 0.5 0)
-    (verd)
-    (spirograph 150 105 100 20 0.5 0)
-    (blau)
-    (spirograph 150 105 100 15 0.5 0)
+    (spiro-voltes 15 105 63 1 0.5 0)
     (vermell)
-    (spirograph 150 105 100 10 0.5 0)
+    (spiros '((105 42 12 0.5 36)
+              (105 45 3 0.5 67)
+              (94 24 9 0.5 223)))
+)
+
+(defun dibujo6 ()
+    (vermell)
+    (spiros '((94 60 11 0.5 18)
+              (94 24 8 0.5 260)))
     (negre)
-    (spirograph 150 105 100 5 0.5 0)
-    
+    (spiro 94 48 5 0.5 201)
 )
 
 (defun dibujo7 ()
-    (posicio 380 180)
     (verd)
-    (spirograph 150 105 100 5 0.5 0)
+    (roda-voltes 8)
     (blau)
-    (spirograph 150 105 95 10 0.5 0)
-    (vermell)
-    (spiro 105 90 14 0.5 0)
-
+    (spiro 94 48 5 0.5 201)
 )
 
 (defun dibujo8 ()
-    (posicio 530 180)
     (blau)
-    (spirograph 150 105 100 20 0.5 0)
-    (verd)
-    (spirograph 150 105 100 18 0.5 0)
-    (blau)
-    (spirograph 150 105 100 16 0.5 0)
+    (spiros '((105 42 12 0.5 36)
+              (105 45 3 0.5 67)
+              (94 24 9 0.5 223)))
     (vermell)
-    (spirograph 150 105 100 10 0.5 0)
-    (negre)
-    (spirograph 150 105 100 2 0.5 0)
+    (spiros '((94 42 12 0.5 36)
+              (105 45 3 0.2 67)))
 )
 
 (defun dibujo9 ()
-    (posicio 80 60)
     (vermell)
-    (spiro 105 90 15 0.3 0)
+    (spiros '((105 63 1 0.5 90)
+              (105 63 3 0.5 90)
+              (105 63 5 0.5 90)))
     (verd)
-    (spiro 105 90 14 0.3 0)
-    (blau)
-    (spiro 105 90 13 0.3 0)
+    (spiro-voltes 10 105 63 9 0.4 45)
+    (negre)
+    (roda-voltes 12)
 )
 
 (defun dibujo10 ()
-    (posicio 230 60)
-    (blau)
-    (spirograph 150 105 100 5 0.5 0)
-    (blau)
-    (spiros '((105 92 15 0.5 0)
-                (105 92 14 0.5 0)
-                (105 92 13 0.5 0)))
+    (negre)
+    (spiros '((105 63 13 0.5 0)
+              (105 63 15 0.5 0)
+              (105 63 17 0.5 0)))
+    (vermell)
+    (spiros '((105 42 12 0.5 36)
+              (105 45 3 0.5 67)
+              (94 24 9 0.5 223)))
 )
 
 (defun dibujo11 ()
-    (posicio 380 60)
-    (verd)
-    (spirograph 100 144 122 10 0.5 0)
     (blau)
-    (spirograph 100 144 133 10 0.5 0)
-    
+    (spiro-voltes 10 32 63 9 0.4 45)
+    (negre)
+    (roda-voltes 7)
 )
 
 (defun dibujo12 ()
-    (posicio 530 60)
-    (vermell)
-    (spirograph 150 105 100 25 0.5 0)
     (verd)
-    (spirograph 150 105 100 20 0.5 0)
-    (vermell)
-    (spirograph 100 144 133 10 0.5 0)
+    (spiros '((105 63 1 0.5 90)
+              (105 63 3 0.5 90)
+              (105 63 5 0.5 90)))
     (blau)
-    (spirograph 150 105 100 7 0.5 0)
-
+    (spiros '((105 63 7 0.5 0)
+              (105 63 9 0.5 0)
+              (105 63 11 0.5 0)))
+    (vermell)
+    (spiros '((105 63 13 0.5 180)
+              (105 63 15 0.5 180)
+              (105 63 17 0.5 180)))
 )
