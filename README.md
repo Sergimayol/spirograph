@@ -1,5 +1,9 @@
 # Práctica 1: Lenguajes de programación
 
+## Ejemplo
+
+![Ejemplo](./docs/ejemplo1.png)
+
 ### Part 1 (3 punts):
 
 - [x] (guarda-informacio)
@@ -24,4 +28,4 @@
 - [x] (roda-voltes n)
 - [x] (spiro-voltes voltes gran petit p in inici)
 - [x] (spiros l)
-- [ ] (dibuix)
+- [x] (dibuix)
